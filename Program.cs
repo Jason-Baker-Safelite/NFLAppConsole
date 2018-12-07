@@ -25,21 +25,7 @@ namespace NFL
             string endTime = DateTime.Now.ToString();
             Console.WriteLine("End time: {0}", endTime);
             Console.ReadKey();
-            //var go =
-            //from ord in (
-            //from playern in players
-            //where playern.Team == "QB"
-            //group playern by playern.Name into playerGroup
-            //select new Player1
-            //{
-            //    Name = playerGroup.Key,
-            //    Score = playerGroup.Sum(x => x.Score),
-            //    Player = playerGroup.
-            //}
-            //)
-            //orderby ord.Score descending
-            //select ord;
-            //var first = go.First();
+
 
             Cleanup();
         }
