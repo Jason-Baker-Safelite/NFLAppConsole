@@ -97,6 +97,7 @@ namespace NFL
             {
                 Visible = false
             };
+            //
             //string XLS_PATH = "C:\\Users\\Jason.Baker\\Projects\\NFLAppConsole\\NFLAppConsole\\NFL_Small_Set.xlsx";
             //string XLS_PATH = Environment.CurrentDirectory+"\\NFL_Small_Set.xlsx";
             //string Path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
