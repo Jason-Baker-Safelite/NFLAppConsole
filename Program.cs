@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -96,7 +97,13 @@ namespace NFL
             {
                 Visible = false
             };
-            string XLS_PATH = "C:\\Users\\Jason.Baker\\Projects\\NFLAppConsole\\NFLAppConsole\\NFL_Small_Set.xlsx";
+            //string XLS_PATH = "C:\\Users\\Jason.Baker\\Projects\\NFLAppConsole\\NFLAppConsole\\NFL_Small_Set.xlsx";
+            //string XLS_PATH = Environment.CurrentDirectory+"\\NFL_Small_Set.xlsx";
+            //string Path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            //string Path = System.AppContext.BaseDirectory;
+            string Path = System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+            //string Path = AppDomain.CurrentDomain.BaseDirectory;
+            string XLS_PATH = Path + "\\NFL_Small_Set.xlsx";
             MyBook = MyApp.Workbooks.Open(XLS_PATH);
             MySheet = (Excel.Worksheet)MyBook.Sheets["1999-2013 data"];
             MyRange = MySheet.UsedRange;
