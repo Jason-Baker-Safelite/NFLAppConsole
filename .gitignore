@@ -361,3 +361,4 @@ healthchecksdb
 *.cache
 *.exe
 *.pdb
+.vs/NFLAppConsole/v15/Server/sqlite3/storage.ide-wal
