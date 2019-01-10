@@ -14,3 +14,11 @@ C:\Users\Jason.Baker\Projects\NFLAppConsole\NFLAppConsole\obj\Debug\NFLAppConsol
 C:\Users\Jason.Baker\Projects\NFLAppConsole\NFLAppConsole\obj\Debug\NFLAppConsole.csproj.CoreCompileInputs.cache
 C:\Users\Jason.Baker\Projects\NFLAppConsole\NFLAppConsole\obj\Debug\NFLAppConsole.exe
 C:\Users\Jason.Baker\Projects\NFLAppConsole\NFLAppConsole\obj\Debug\NFLAppConsole.pdb
+C:\Users\Dennis.Langmeyer\Documents\GitHub\NFLAppConsole\bin\Debug\NFLAppConsole.exe.config
+C:\Users\Dennis.Langmeyer\Documents\GitHub\NFLAppConsole\bin\Debug\NFLAppConsole.exe
+C:\Users\Dennis.Langmeyer\Documents\GitHub\NFLAppConsole\bin\Debug\NFLAppConsole.pdb
+C:\Users\Dennis.Langmeyer\Documents\GitHub\NFLAppConsole\obj\Debug\NFLAppConsole.csprojAssemblyReference.cache
+C:\Users\Dennis.Langmeyer\Documents\GitHub\NFLAppConsole\obj\Debug\NFLAppConsole.csproj.ResolveComReference.cache
+C:\Users\Dennis.Langmeyer\Documents\GitHub\NFLAppConsole\obj\Debug\NFLAppConsole.csproj.CoreCompileInputs.cache
+C:\Users\Dennis.Langmeyer\Documents\GitHub\NFLAppConsole\obj\Debug\NFLAppConsole.exe
+C:\Users\Dennis.Langmeyer\Documents\GitHub\NFLAppConsole\obj\Debug\NFLAppConsole.pdb

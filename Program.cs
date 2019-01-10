@@ -96,9 +96,10 @@ namespace NFL
             {
                 Visible = false
             };
-            string XLS_PATH = "C:\\Users\\Jason.Baker\\Projects\\NFLAppConsole\\NFLAppConsole\\NFL_Small_Set.xlsx";
+           // String XLS_Path = Environment.CurrentDirectory+"\\NFL_Small_Set.xlsx";
+            string XLS_PATH = "C:\\Users\\Dennis.Langmeyer\\Desktop\\NFL_Small_Set.xlsx";
             MyBook = MyApp.Workbooks.Open(XLS_PATH);
-            MySheet = (Excel.Worksheet)MyBook.Sheets["1999-2013 data"];
+            MySheet = (Excel.Worksheet)MyBook.Sheets["Sheet1"];
             MyRange = MySheet.UsedRange;
             object[,] objectArray = (object[,])MyRange.Value2;
             return objectArray;
