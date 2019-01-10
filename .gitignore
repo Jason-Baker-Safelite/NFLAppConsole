@@ -352,3 +352,12 @@ ASALocalRun/
 # BeatPulse healthcheck temp database 
 healthchecksdb
 *.ide-wal
+*.ide-wal
+*.ide-wal
+*.exe
+*.pdb
+*.cache
+*.txt
+*.cache
+*.exe
+*.pdb

@@ -14,3 +14,11 @@ C:\Users\Jason.Baker\Projects\NFLAppConsole\NFLAppConsole\obj\Debug\NFLAppConsol
 C:\Users\Jason.Baker\Projects\NFLAppConsole\NFLAppConsole\obj\Debug\NFLAppConsole.csproj.CoreCompileInputs.cache
 C:\Users\Jason.Baker\Projects\NFLAppConsole\NFLAppConsole\obj\Debug\NFLAppConsole.exe
 C:\Users\Jason.Baker\Projects\NFLAppConsole\NFLAppConsole\obj\Debug\NFLAppConsole.pdb
+C:\Users\Jason.Baker\Projects\GitHub\NFLAppConsole\bin\Debug\NFLAppConsole.exe.config
+C:\Users\Jason.Baker\Projects\GitHub\NFLAppConsole\bin\Debug\NFLAppConsole.exe
+C:\Users\Jason.Baker\Projects\GitHub\NFLAppConsole\bin\Debug\NFLAppConsole.pdb
+C:\Users\Jason.Baker\Projects\GitHub\NFLAppConsole\obj\Debug\NFLAppConsole.csprojAssemblyReference.cache
+C:\Users\Jason.Baker\Projects\GitHub\NFLAppConsole\obj\Debug\NFLAppConsole.csproj.ResolveComReference.cache
+C:\Users\Jason.Baker\Projects\GitHub\NFLAppConsole\obj\Debug\NFLAppConsole.csproj.CoreCompileInputs.cache
+C:\Users\Jason.Baker\Projects\GitHub\NFLAppConsole\obj\Debug\NFLAppConsole.exe
+C:\Users\Jason.Baker\Projects\GitHub\NFLAppConsole\obj\Debug\NFLAppConsole.pdb
