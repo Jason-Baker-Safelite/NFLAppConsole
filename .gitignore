@@ -367,3 +367,4 @@ obj/Debug/NFLAppConsole.csproj.CoreCompileInputs.cache
 obj/Debug/NFLAppConsole.csproj.ResolveComReference.cache
 .vs/NFLAppConsole/v15/Server/sqlite3/storage.ide-wal
 *.ide-wal
+*.ide-wal
