@@ -362,3 +362,6 @@ healthchecksdb
 *.exe
 *.pdb
 .vs/NFLAppConsole/v15/Server/sqlite3/storage.ide-wal
+.vs/NFLAppConsole/v15/Server/sqlite3/storage.ide-wal
+obj/Debug/NFLAppConsole.csproj.CoreCompileInputs.cache
+obj/Debug/NFLAppConsole.csproj.ResolveComReference.cache
