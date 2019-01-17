@@ -369,3 +369,8 @@ obj/Debug/NFLAppConsole.csproj.ResolveComReference.cache
 *.ide-wal
 *.ide-wal
 *.cache
+*.exe
+bin/Debug/NFLAppConsole.exe
+bin/Debug/NFLAppConsole.exe.config
+bin/Debug/NFLAppConsole.exe
+bin/Debug/NFLAppConsole.pdb
