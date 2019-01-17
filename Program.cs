@@ -4,19 +4,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Excel = Microsoft.Office.Interop.Excel;
+using System.Configuration;
+using System.Collections.Specialized;
 
-
-//THIS IS COMMENT ON FEATURE BRANCH 1
-//NEW-BRANCH
-// COMMENT NEW_BRANCH
-//This is the feature branch JIRA 1234
-// next comment by RBMC
-//Dennis 1/16/2019
-//cmj
-//new cmj
-//ide wal
-//new ignore
-//ignore 3
+//Added the config file
+//This file should be set to your locations of the excel and the sheet used
+//This file should be set to ignore on the .gitignore
 
 
 namespace NFL
@@ -111,16 +104,10 @@ namespace NFL
             {
                 Visible = false
             };
-            //
-            //string XLS_PATH = "C:\\Users\\Jason.Baker\\Projects\\NFLAppConsole\\NFLAppConsole\\NFL_Small_Set.xlsx";
-            //string XLS_PATH = Environment.CurrentDirectory+"\\NFL_Small_Set.xlsx";
-            //string Path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            //string Path = System.AppContext.BaseDirectory;
-            string Path = System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
-            //string Path = AppDomain.CurrentDomain.BaseDirectory;
-            string XLS_PATH = Path + "\\NFL_Small_Set.xlsx";
+
+            string XLS_PATH = ConfigurationManager.AppSettings.Get("ExcelPath"); 
             MyBook = MyApp.Workbooks.Open(XLS_PATH);
-            MySheet = (Excel.Worksheet)MyBook.Sheets["1999-2013 data"];
+            MySheet = (Excel.Worksheet)MyBook.Sheets[ConfigurationManager.AppSettings.Get("SheetName") ]; 
             MyRange = MySheet.UsedRange;
             object[,] objectArray = (object[,])MyRange.Value2;
             return objectArray;
