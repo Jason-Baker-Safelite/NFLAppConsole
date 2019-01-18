@@ -11,7 +11,7 @@ using System.Collections.Specialized;
 //This file should be set to your locations of the excel and the sheet used
 //This file should be set to ignore on the .gitignore after your settings are setup
 //Be aware that some changes could be checked it that could change this but currently not anticipated
-
+// Randy comment
 
 namespace NFL
 {
