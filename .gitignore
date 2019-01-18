@@ -12,7 +12,7 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 #Project Specific Files (TEST APP XLS READER)
-*.xlsx
+#*.xlsx
 *.lock
 
 # User-specific files
@@ -362,3 +362,18 @@ healthchecksdb
 *.exe
 *.pdb
 .vs/NFLAppConsole/v15/Server/sqlite3/storage.ide-wal
+.vs/NFLAppConsole/v15/Server/sqlite3/storage.ide-wal
+obj/Debug/NFLAppConsole.csproj.CoreCompileInputs.cache
+obj/Debug/NFLAppConsole.csproj.ResolveComReference.cache
+.vs/NFLAppConsole/v15/Server/sqlite3/storage.ide-wal
+*.ide-wal
+*.ide-wal
+*.cache
+*.exe
+bin/Debug/NFLAppConsole.exe
+bin/Debug/NFLAppConsole.exe.config
+bin/Debug/NFLAppConsole.exe
+bin/Debug/NFLAppConsole.pdb
+bin/Debug/NFLAppConsole.exe
+bin/Debug/NFLAppConsole.pdb
+bin/Debug/NFLAppConsole.exe.config
