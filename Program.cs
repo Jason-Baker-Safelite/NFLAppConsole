@@ -34,16 +34,40 @@ namespace NFL
         };
         public static void Main(string[] args)
         {
-            string startTime = DateTime.Now.ToString();
-            Console.WriteLine("Start time: {0}", startTime);
-            ProcessSpreadsheet(SetUpExcel());
-            string endTime = DateTime.Now.ToString();
-            Console.WriteLine("End time: {0}", endTime);
+            PrintMenu();
+            //string startTime = DateTime.Now.ToString();
+            //Console.WriteLine("Start time: {0}", startTime);
+            //ProcessSpreadsheet(SetUpExcel());
+            //string endTime = DateTime.Now.ToString();
+            //Console.WriteLine("End time: {0}", endTime);
             Console.ReadKey();
 
-            
-            Cleanup();
+
+            //Cleanup();
         }
+
+        private static void PrintMenu()
+        {
+            Console.WriteLine("Select Menu Item");
+            Console.WriteLine("1. Search by Player");
+            Console.WriteLine("2. Search by Team");
+            string Input = Console.ReadLine();
+            if (Input == "1")
+            {
+                Console.WriteLine("You selected 1");
+            }
+            else    if (Input == "2")
+            {
+                Console.WriteLine("You selected 2");             
+            }
+            else
+            {
+                Console.WriteLine("Invalid Menu Selection");
+                PrintMenu();
+            }
+
+        }
+
         public static void ProcessSpreadsheet(object[,] ExcelArray)
         {
             Dictionary<string, Season> QBDictionary = new Dictionary<string, Season>();
@@ -112,9 +136,9 @@ namespace NFL
                 Visible = false
             };
 
-            string XLS_PATH = ConfigurationManager.AppSettings.Get("ExcelPath"); 
+            string XLS_PATH = ConfigurationManager.AppSettings.Get("ExcelPath");
             MyBook = MyApp.Workbooks.Open(XLS_PATH);
-            MySheet = (Excel.Worksheet)MyBook.Sheets[ConfigurationManager.AppSettings.Get("SheetName") ]; 
+            MySheet = (Excel.Worksheet)MyBook.Sheets[ConfigurationManager.AppSettings.Get("SheetName")];
             MyRange = MySheet.UsedRange;
             object[,] objectArray = (object[,])MyRange.Value2;
             return objectArray;

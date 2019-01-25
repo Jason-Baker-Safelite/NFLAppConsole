@@ -64,7 +64,9 @@
     <Compile Include="Season.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.Config" />
+    <None Include="App.Config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="NFL.xlsx" />
   </ItemGroup>
   <ItemGroup>
