@@ -51,14 +51,30 @@ namespace NFL
             Console.WriteLine("Select Menu Item");
             Console.WriteLine("1. Search by Player");
             Console.WriteLine("2. Search by Team");
+            Console.WriteLine("3. Search by Position");
+            Console.WriteLine("4. Search by Year");
+            Console.WriteLine("5. Search by College");
             string Input = Console.ReadLine();
             if (Input == "1")
             {
                 Console.WriteLine("You selected 1");
+                SearchByPlayer();
             }
             else    if (Input == "2")
             {
                 Console.WriteLine("You selected 2");             
+            }
+            else    if (Input == "3")
+            {
+                Console.WriteLine("You selected 3");
+            }
+            else    if (Input == "4")
+            {
+                Console.WriteLine("You selected 4");
+            }
+            else    if (Input == "5")
+            {
+                Console.WriteLine("You selected 5");
             }
             else
             {
@@ -67,6 +83,27 @@ namespace NFL
             }
 
         }
+
+        private static void SearchByPlayer()
+        {
+            Console.WriteLine("Please Enter Player Name");
+            string input = Console.ReadLine();
+            Console.WriteLine("Search for " + input);
+            object[,] PlayerArray = SetUpExcel();
+            Dictionary<string, Season> PlayerCollection = LoadCollection(PlayerArray);
+        }
+
+        private static Dictionary<string, Season> LoadCollection(object[,] ExcelArray)
+        {
+            Dictionary<string, Season> PlayerDictionary = new Dictionary<string, Season>();
+            for (int currentRow = 2; currentRow <= ExcelArray.GetLength(0); currentRow++)
+            {
+                Season season = AddSeason(currentRow, ExcelArray);
+                PlayerDictionary.Add(season.FullName, season);
+            }
+                return PlayerDictionary;
+        }
+
 
         public static void ProcessSpreadsheet(object[,] ExcelArray)
         {
@@ -106,7 +143,7 @@ namespace NFL
             Validate(rushingYards, currentRow);
             if (positionDictionary.Count == 0)
             {
-                Season season = AddSeason(currentRow, position, ExcelArray);
+                Season season = AddSeason(currentRow, ExcelArray);
                 positionDictionary.Add(season.FullName, season);
             }
             else
@@ -124,7 +161,7 @@ namespace NFL
                 }
                 else
                 {
-                    Season season = AddSeason(currentRow, position, ExcelArray);
+                    Season season = AddSeason(currentRow, ExcelArray);
                     positionDictionary.Add(season.FullName, season);
                 }
             }
@@ -159,13 +196,13 @@ namespace NFL
                 throw new ArgumentException(exceptionString);
             }
         }
-        private static Season AddSeason(int currentRow, string position, object[,] ExcelArray)
+        private static Season AddSeason(int currentRow, object[,] ExcelArray)
         {
             Season season = new Season
             {
                 FullName = ExcelArray[currentRow, 2].ToString(),
                 PassingYards = (double)ExcelArray[currentRow, 11],
-                Position = position,
+                Position = ExcelArray[currentRow, 22].ToString(),
                 RushingYards = (double)ExcelArray[currentRow, 15]
             };
             return season;
