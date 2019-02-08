@@ -60,21 +60,22 @@ namespace NFL
                 Console.WriteLine("You selected 1");
                 SearchByPlayer();
             }
-            else    if (Input == "2")
+            else if (Input == "2")
             {
-                Console.WriteLine("You selected 2");             
+                Console.WriteLine("You selected 2");
             }
-            else    if (Input == "3")
+            else if (Input == "3")
             {
                 Console.WriteLine("You selected 3");
             }
-            else    if (Input == "4")
+            else if (Input == "4")
             {
                 Console.WriteLine("You selected 4");
             }
-            else    if (Input == "5")
+            else if (Input == "5")
             {
-                Console.WriteLine("You selected 5");
+                Console.WriteLine("You selected Search by College");
+                SearchByCollege();
             }
             else
             {
@@ -91,6 +92,7 @@ namespace NFL
             Console.WriteLine("Search for " + input);
             object[,] PlayerArray = SetUpExcel();
             Dictionary<string, Season> PlayerCollection = LoadCollection(PlayerArray);
+            Dictionary<string, Season> NameCollection = PlayerCollection.Where(S => S.Value.FullName == input).ToDictionary(k => k.Key, k => k.Value);
         }
 
         private static Dictionary<string, Season> LoadCollection(object[,] ExcelArray)
@@ -99,11 +101,44 @@ namespace NFL
             for (int currentRow = 2; currentRow <= ExcelArray.GetLength(0); currentRow++)
             {
                 Season season = AddSeason(currentRow, ExcelArray);
-                PlayerDictionary.Add(season.FullName, season);
+                PlayerDictionary.Add(season.FullName + season.Team + season.Year, season);
             }
-                return PlayerDictionary;
+            return PlayerDictionary;
         }
 
+        //Dennis college search - start
+        private static void SearchByCollege()
+        {
+            Console.WriteLine("Please Enter College Name");
+            string input = Console.ReadLine();
+
+            if (String.IsNullOrEmpty(input))
+            {
+                Console.WriteLine("Invalid College Name");
+                // ?????? - how do I return to the top of "SearchByCollege"??????
+            }
+            else
+            {
+                // Extract the rows matching the college (name / pos / college)
+                object[,] PlayerArray = SetUpExcel();
+                Dictionary<string, Season> CollegeDict = LoadCollection(PlayerArray);
+                Dictionary<string, Season> NameCollection = CollegeDict.Where(S => S.Value.College == input).ToDictionary(k => k.Key, k => k.Value);
+                int count1 = CollegeDict.Count;
+                if (count1 > 1)
+                {
+                    Console.WriteLine("College Name not unique");
+                }
+                if (count1 == 0)
+                {
+                    Console.WriteLine("College Name not found");
+                }
+                else
+                {
+                    Console.WriteLine("College data displayjj");
+                }
+            }
+            //Dennis college search - end
+        }
 
         public static void ProcessSpreadsheet(object[,] ExcelArray)
         {
@@ -135,12 +170,21 @@ namespace NFL
         }
         public static void ProcessPosition(Dictionary<string, Season> positionDictionary, string position, int currentRow, object[,] ExcelArray)
         {
+            string year = ExcelArray[currentRow, 1].ToString();
+            Validate(year, currentRow);
             string player = ExcelArray[currentRow, 2].ToString();
             Validate(player, currentRow);
+            string team = ExcelArray[currentRow, 6].ToString();
+            Validate(team, currentRow);
             double passingYards = (double)ExcelArray[currentRow, 11];
             Validate(passingYards, currentRow);
             double rushingYards = (double)ExcelArray[currentRow, 15];
             Validate(rushingYards, currentRow);
+            string postion = ExcelArray[currentRow, 22].ToString();
+            Validate(position, currentRow);
+            string college = ExcelArray[currentRow, 26].ToString();
+            Validate(college, currentRow);
+
             if (positionDictionary.Count == 0)
             {
                 Season season = AddSeason(currentRow, ExcelArray);
@@ -200,10 +244,22 @@ namespace NFL
         {
             Season season = new Season
             {
+                //                FullName = ExcelArray[currentRow, 2].ToString(),
+                //                PassingYards = (double)ExcelArray[currentRow, 11],
+                //                Position = ExcelArray[currentRow, 22].ToString(),
+                //                RushingYards = (double)ExcelArray[currentRow, 15]
+
+                //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                //Dennis - NEED TO VALIDATE NUMBERIC FIELDS - ROW 7531 - Victor Cruz
+                //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+                Year = (double)ExcelArray[currentRow, 1],
                 FullName = ExcelArray[currentRow, 2].ToString(),
+                Team = ExcelArray[currentRow, 6].ToString(),
                 PassingYards = (double)ExcelArray[currentRow, 11],
+                RushingYards = (double)ExcelArray[currentRow, 15],
                 Position = ExcelArray[currentRow, 22].ToString(),
-                RushingYards = (double)ExcelArray[currentRow, 15]
+                College = ExcelArray[currentRow, 26].ToString()
             };
             return season;
         }
