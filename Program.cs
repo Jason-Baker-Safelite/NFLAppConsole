@@ -91,6 +91,7 @@ namespace NFL
             Console.WriteLine("Search for " + input);
             object[,] PlayerArray = SetUpExcel();
             Dictionary<string, Season> PlayerCollection = LoadCollection(PlayerArray);
+            Dictionary<string, Season> NameCollection=PlayerCollection.Where(S => S.Value.FullName == input).ToDictionary(k=>k.Key,k=>k.Value)
         }
 
         private static Dictionary<string, Season> LoadCollection(object[,] ExcelArray)
@@ -137,6 +138,14 @@ namespace NFL
         {
             string player = ExcelArray[currentRow, 2].ToString();
             Validate(player, currentRow);
+            string team = ExcelArray[currentRow, 6].ToString();
+            Validate(team, currentRow);
+            string postion = ExcelArray[currentRow, 22].ToString();
+            Validate(position, currentRow);
+            string year = ExcelArray[currentRow, 1].ToString();
+            Validate(year, currentRow);
+            string college = ExcelArray[currentRow, 26].ToString();
+            Validate(college, currentRow);
             double passingYards = (double)ExcelArray[currentRow, 11];
             Validate(passingYards, currentRow);
             double rushingYards = (double)ExcelArray[currentRow, 15];
