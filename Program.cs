@@ -92,20 +92,26 @@ namespace NFL
             string input = Console.ReadLine();
             while (String.IsNullOrEmpty(input))
             {
-                Console.WriteLine("Invalid College Name");
                 input = Console.ReadLine();
             }
+            Console.WriteLine("Searching for players...");
 
-            // Extract the rows matching the college (name / position / college)
             object[,] playerArray = SetUpExcel();
             List<Season> playerCollection = LoadCollection(playerArray);
             List<Season> nameCollection = playerCollection.Where(s => s.College == input).ToList();
-            if (nameCollection.Count == 0)
+
+            var distPlayer = (from z in nameCollection
+                              orderby z.FullName
+                              select z.FullName
+                               ).Distinct();
+
+            foreach (var FullName in distPlayer)
             {
-                Console.WriteLine("No entries found for College Name");
-                input = Console.ReadLine();
+                Console.WriteLine(FullName);
             }
-             //Dennis college search - end
+            Console.WriteLine("Player List complete");
+
+            //Dennis college search - end
         }
         public static List<Season> LoadCollection(object[,] ExcelArray)
         {
