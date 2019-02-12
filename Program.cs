@@ -88,29 +88,49 @@ namespace NFL
         //Dennis college search - start
         public static void SearchByCollege(string menuNumber)
         {
-            Console.WriteLine("Please Enter College Name");
+            Console.WriteLine("Please Enter College Name or '?' to list colleges");
             string input = Console.ReadLine();
             while (String.IsNullOrEmpty(input))
             {
                 input = Console.ReadLine();
             }
-            Console.WriteLine("Searching for players...");
-
-            object[,] playerArray = SetUpExcel();
-            List<Season> playerCollection = LoadCollection(playerArray);
-            List<Season> nameCollection = playerCollection.Where(s => s.College == input).ToList();
-
-            var distPlayer = (from z in nameCollection
-                              orderby z.FullName
-                              select z.FullName
-                               ).Distinct();
-
-            foreach (var FullName in distPlayer)
+            if (input == "?")
             {
-                Console.WriteLine(FullName);
-            }
-            Console.WriteLine("Player List complete");
+                Console.WriteLine("Searching for colleges...");
 
+                object[,] playerArray = SetUpExcel();
+                List<Season> playerCollection = LoadCollection(playerArray);
+
+                var distCollege = (from z in playerCollection
+                                  orderby z.College
+                                  select z.College
+                                   ).Distinct();
+
+                foreach (var College in distCollege)
+                {
+                    Console.WriteLine(College);
+                }
+                Console.WriteLine("College List complete");
+            }
+            else
+            {
+                Console.WriteLine("Searching for players...");
+
+                object[,] playerArray = SetUpExcel();
+                List<Season> playerCollection = LoadCollection(playerArray);
+                List<Season> nameCollection = playerCollection.Where(s => s.College == input).ToList();
+
+                var distPlayer = (from z in nameCollection
+                                  orderby z.FullName
+                                  select z.FullName
+                                   ).Distinct();
+
+                foreach (var FullName in distPlayer)
+                {
+                    Console.WriteLine(FullName);
+                }
+                Console.WriteLine("Player List complete");
+            }
             //Dennis college search - end
         }
         public static List<Season> LoadCollection(object[,] ExcelArray)
