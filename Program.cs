@@ -86,37 +86,26 @@ namespace NFL
             List<Season> nameCollection = playerCollection.Where(s => s.FullName == userInput).ToList();
         }
         //Dennis college search - start
-        public static void SearchByCollege(string input)
+        public static void SearchByCollege(string menuNumber)
         {
             Console.WriteLine("Please Enter College Name");
-            input = Console.ReadLine();
-
-            if (String.IsNullOrEmpty(input))
+            string input = Console.ReadLine();
+            while (String.IsNullOrEmpty(input))
             {
                 Console.WriteLine("Invalid College Name");
-                // ?????? - how do I return to the top of "SearchByCollege"??????
+                input = Console.ReadLine();
             }
-            else
+
+            // Extract the rows matching the college (name / position / college)
+            object[,] playerArray = SetUpExcel();
+            List<Season> playerCollection = LoadCollection(playerArray);
+            List<Season> nameCollection = playerCollection.Where(s => s.College == input).ToList();
+            if (nameCollection.Count == 0)
             {
-                // Extract the rows matching the college (name / position / college)
-                object[,] PlayerArray = SetUpExcel();
-                List<Season> collegeDict = LoadCollection(PlayerArray);
-                List<Season> nameCollection = collegeDict.Where(s => s.College == input).ToList();
-                int count1 = collegeDict.Count;
-                if (count1 > 1)
-                {
-                    Console.WriteLine("College Name not unique");
-                }
-                if (count1 == 0)
-                {
-                    Console.WriteLine("College Name not found");
-                }
-                else
-                {
-                    Console.WriteLine("College data display");
-                }
+                Console.WriteLine("No entries found for College Name");
+                input = Console.ReadLine();
             }
-            //Dennis college search - end
+             //Dennis college search - end
         }
         public static List<Season> LoadCollection(object[,] ExcelArray)
         {
