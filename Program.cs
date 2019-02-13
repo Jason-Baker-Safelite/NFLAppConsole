@@ -64,7 +64,7 @@ namespace NFL
                 }
                 else
                 {
-                    DisplayPosition(positionResultsCollection);
+                    DisplayResults(positionResultsCollection);
                 }
             }
             else if (menuSelection == "4")
@@ -107,19 +107,30 @@ namespace NFL
             List<Season> positionCollection = LoadCollection(positionArray).Where(s => s.Position == validInput).OrderBy(o => o.FullName).ThenBy(o => o.Year).ToList();
             return positionCollection;
         }
-        public static void DisplayPosition(List<Season> displayCollection)
+        public static void DisplayResults(List<Season> displayCollection)
         {
+            int skipCount = 0;
+            int takeCount = 25;
+            Console.WriteLine("Number of results " + displayCollection.Count);
             Console.WriteLine("Position\t    Player Name\t\tTeam\tYear\tPassing Yds\tRushing Yds");
-            foreach (Season selectedPosition in displayCollection)
+            do
             {
-                Console.WriteLine("{0,5}\t{1,25}\t{2,3}\t{3,4}\t{4,8:n0}\t{5,8:n0}",
-                    selectedPosition.Position,
-                    selectedPosition.FullName,
-                    selectedPosition.Team,
-                    selectedPosition.Year,
-                    selectedPosition.PassingYards,
-                    selectedPosition.RushingYards);
-            }
+                foreach (Season selectedPosition in displayCollection.Skip<Season>(skipCount).Take<Season>(takeCount))
+                {
+                    Console.WriteLine("{0,5}\t{1,25}\t{2,3}\t{3,4}\t{4,8:n0}\t{5,8:n0}",
+                        selectedPosition.Position,
+                        selectedPosition.FullName,
+                        selectedPosition.Team,
+                        selectedPosition.Year,
+                        selectedPosition.PassingYards,
+                        selectedPosition.RushingYards);
+         
+                }
+                Console.WriteLine(skipCount);
+                Console.ReadKey();
+                skipCount += 25;
+            } while (skipCount < displayCollection.Count);
+            Console.WriteLine("Done with list");
         }
         public static void SearchByPlayer(string menuNumber)
         {
@@ -147,8 +158,8 @@ namespace NFL
                 List<Season> playerCollection = LoadCollection(playerArray);
 
                 var distCollege = (from z in playerCollection
-                                  orderby z.College
-                                  select z.College
+                                   orderby z.College
+                                   select z.College
                                    ).Distinct();
 
                 foreach (var College in distCollege)
@@ -167,13 +178,17 @@ namespace NFL
 
                 var distPlayer = (from z in nameCollection
                                   orderby z.FullName
-                                  select z.FullName
-                                   ).Distinct();
-
-                foreach (var FullName in distPlayer)
-                {
-                    Console.WriteLine(FullName);
-                }
+                                  select new Season
+                                  {
+                                      FullName = z.FullName,
+                                      Position = z.Position
+                                  }
+                                   ).Distinct().ToList();
+                DisplayResults(distPlayer);
+                //foreach (var Player in distPlayer)
+                //{
+                //    Console.WriteLine(Player.FullName+" "+Player.Position);
+                //}
                 Console.WriteLine("Player List complete");
             }
             //Dennis college search - end
