@@ -111,12 +111,14 @@ namespace NFL
         {
             int skipCount = 0;
             int takeCount = 25;
+            int printCount = 0;
             Console.WriteLine("Number of results " + displayCollection.Count);
             Console.WriteLine("Position\t    Player Name\t\tTeam\tYear\tPassing Yds\tRushing Yds");
             do
             {
                 foreach (Season selectedPosition in displayCollection.Skip<Season>(skipCount).Take<Season>(takeCount))
                 {
+
                     Console.WriteLine("{0,5}\t{1,25}\t{2,3}\t{3,4}\t{4,8:n0}\t{5,8:n0}",
                         selectedPosition.Position,
                         selectedPosition.FullName,
@@ -124,9 +126,9 @@ namespace NFL
                         selectedPosition.Year,
                         selectedPosition.PassingYards,
                         selectedPosition.RushingYards);
-         
+                    printCount += 1;
                 }
-                Console.WriteLine(skipCount);
+                Console.WriteLine("From "+skipCount+" to "+printCount);
                 Console.ReadKey();
                 skipCount += 25;
             } while (skipCount < displayCollection.Count);
@@ -148,6 +150,7 @@ namespace NFL
             string input = Console.ReadLine();
             while (String.IsNullOrEmpty(input))
             {
+                Console.WriteLine("Please enter selection for colleges");
                 input = Console.ReadLine();
             }
             if (input == "?")
@@ -180,16 +183,16 @@ namespace NFL
                                   orderby z.FullName
                                   select new Season
                                   {
+                                      Year = z.Year,
                                       FullName = z.FullName,
+                                      Team = z.Team,
+                                      PassingYards = z.PassingYards,
+                                      RushingYards = z.RushingYards,
+                                      College = z.College,
                                       Position = z.Position
                                   }
                                    ).Distinct().ToList();
                 DisplayResults(distPlayer);
-                //foreach (var Player in distPlayer)
-                //{
-                //    Console.WriteLine(Player.FullName+" "+Player.Position);
-                //}
-                Console.WriteLine("Player List complete");
             }
             //Dennis college search - end
         }
