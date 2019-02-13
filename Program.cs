@@ -13,11 +13,6 @@ namespace NFL
         private static Excel.Application MyApp = null;
         private static Excel.Worksheet MySheet = null;
         private static Excel.Range MyRange = null;
-        public enum PlayerPosition
-        {
-            QB,
-            RB
-        };
         public enum SpreadsheetColumn
         {
             yearColumn = 1,
@@ -60,6 +55,17 @@ namespace NFL
             else if (menuSelection == "3")
             {
                 Console.WriteLine("You selected 3");
+                Console.WriteLine("Please enter 2-character position: ");
+                string userInput = ValidateInput();
+                List<Season> positionResultsCollection = SearchByPosition(userInput);
+                if (positionResultsCollection.Count == 0)
+                {
+                    Console.WriteLine("No entries found for position " + userInput);
+                }
+                else
+                {
+                    DisplayPosition(positionResultsCollection);
+                }
             }
             else if (menuSelection == "4")
             {
@@ -74,6 +80,45 @@ namespace NFL
             {
                 Console.WriteLine("Invalid Menu Selection");
                 PrintMenu();
+            }
+        }
+        public static string ValidateInput()
+        {
+            bool validPositon = false;
+            string userEntry = Console.ReadLine().ToUpper();
+            do
+            {
+                if (userEntry.Length == 2)
+                {
+                    validPositon = true;
+                }
+                else
+                {
+                    Console.WriteLine("Please enter 2-character position: ");
+                    userEntry = Console.ReadLine().ToUpper();
+                }
+            } while (validPositon == false);
+            return userEntry;
+        }
+        public static List<Season> SearchByPosition(string validInput)
+        {
+            Console.WriteLine("Searching for " + validInput + "...");
+            object[,] positionArray = SetUpExcel();
+            List<Season> positionCollection = LoadCollection(positionArray).Where(s => s.Position == validInput).OrderBy(o => o.FullName).ThenBy(o => o.Year).ToList();
+            return positionCollection;
+        }
+        public static void DisplayPosition(List<Season> displayCollection)
+        {
+            Console.WriteLine("Position\t    Player Name\t\tTeam\tYear\tPassing Yds\tRushing Yds");
+            foreach (Season selectedPosition in displayCollection)
+            {
+                Console.WriteLine("{0,5}\t{1,25}\t{2,3}\t{3,4}\t{4,8:n0}\t{5,8:n0}",
+                    selectedPosition.Position,
+                    selectedPosition.FullName,
+                    selectedPosition.Team,
+                    selectedPosition.Year,
+                    selectedPosition.PassingYards,
+                    selectedPosition.RushingYards);
             }
         }
         public static void SearchByPlayer(string menuNumber)
