@@ -131,35 +131,50 @@ namespace NFL
             List<Season> nameCollection = playerCollection.Where(s => s.FullName == userInput).ToList();
         }
         //Dennis college search - start
-        public static void SearchByCollege(string input)
+        public static void SearchByCollege(string menuNumber)
         {
-            Console.WriteLine("Please Enter College Name");
-            input = Console.ReadLine();
-
-            if (String.IsNullOrEmpty(input))
+            Console.WriteLine("Please Enter College Name or '?' to list colleges");
+            string input = Console.ReadLine();
+            while (String.IsNullOrEmpty(input))
             {
-                Console.WriteLine("Invalid College Name");
-                // ?????? - how do I return to the top of "SearchByCollege"??????
+                input = Console.ReadLine();
+            }
+            if (input == "?")
+            {
+                Console.WriteLine("Searching for colleges...");
+
+                object[,] playerArray = SetUpExcel();
+                List<Season> playerCollection = LoadCollection(playerArray);
+
+                var distCollege = (from z in playerCollection
+                                  orderby z.College
+                                  select z.College
+                                   ).Distinct();
+
+                foreach (var College in distCollege)
+                {
+                    Console.WriteLine(College);
+                }
+                Console.WriteLine("College List complete");
             }
             else
             {
-                // Extract the rows matching the college (name / position / college)
-                object[,] PlayerArray = SetUpExcel();
-                List<Season> collegeDict = LoadCollection(PlayerArray);
-                List<Season> nameCollection = collegeDict.Where(s => s.College == input).ToList();
-                int count1 = collegeDict.Count;
-                if (count1 > 1)
+                Console.WriteLine("Searching for players...");
+
+                object[,] playerArray = SetUpExcel();
+                List<Season> playerCollection = LoadCollection(playerArray);
+                List<Season> nameCollection = playerCollection.Where(s => s.College == input).ToList();
+
+                var distPlayer = (from z in nameCollection
+                                  orderby z.FullName
+                                  select z.FullName
+                                   ).Distinct();
+
+                foreach (var FullName in distPlayer)
                 {
-                    Console.WriteLine("College Name not unique");
+                    Console.WriteLine(FullName);
                 }
-                if (count1 == 0)
-                {
-                    Console.WriteLine("College Name not found");
-                }
-                else
-                {
-                    Console.WriteLine("College data display");
-                }
+                Console.WriteLine("Player List complete");
             }
             //Dennis college search - end
         }
