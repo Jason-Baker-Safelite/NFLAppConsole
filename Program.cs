@@ -193,7 +193,7 @@ namespace NFL
                 var distCollege = (from z in playerCollection
                                    orderby z.College
                                    select z.College
-                                   ).Distinct();
+                                   ).Distinct().ToList();
 
                 foreach (var College in distCollege)
                 {
@@ -278,8 +278,17 @@ namespace NFL
             }
             if (String.IsNullOrEmpty(parmArray[spreadsheetRow, (int)SpreadsheetColumn.collegeColumn].ToString()))
             {
-                parmArray[spreadsheetRow, (int)SpreadsheetColumn.collegeColumn] = " ";
+                parmArray[spreadsheetRow, (int)SpreadsheetColumn.collegeColumn] = "Unknown";
             }
+            if (String.Equals("0",(parmArray[spreadsheetRow, (int)SpreadsheetColumn.collegeColumn].ToString())))
+            {
+                parmArray[spreadsheetRow, (int)SpreadsheetColumn.collegeColumn] = "Unknown";
+            }
+            if (String.Equals("-2146826246", (parmArray[spreadsheetRow, (int)SpreadsheetColumn.collegeColumn].ToString())))
+            {
+                parmArray[spreadsheetRow, (int)SpreadsheetColumn.collegeColumn] = "Unknown";
+            }
+            
             return parmArray;
         }
         public static Season AddSeason(int currentRow, object[,] ExcelArray)
