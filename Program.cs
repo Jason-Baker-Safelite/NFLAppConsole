@@ -13,10 +13,7 @@ namespace NFL
         private static Excel.Application MyApp = null;
         private static Excel.Worksheet MySheet = null;
         private static Excel.Range MyRange = null;
-        private static object TeamArray;
-        private static readonly string menuSelection;
-        private static readonly object userInput;
-
+      
         public enum SpreadsheetColumn
         {
             yearColumn = 1,
@@ -55,7 +52,7 @@ namespace NFL
             else if (userInput == "2")
             {
                 Console.WriteLine("You selected 2");
-                SearchByTeam(menuSelection);
+                SearchByTeam(userInput);
             }
             else if (userInput == "3")
             {
@@ -93,24 +90,14 @@ namespace NFL
         //        Console.WriteLine("I'm here now what");
         //}
         {
-                Console.WriteLine("Please Enter Team Name");
-                string userInput = Console.ReadLine();
-                Console.WriteLine("Search for " + userInput);
-                object[,] playerArray = SetUpExcel();
-                List<Season> TeamCollection = LoadCollection(TeamArray);
-                List<Season> nameCollection = TeamCollection.Where(s => s.FullName == userInput).ToList();
-        }
-
-                private static List<Season> LoadCollection(object TeamArray)
-        {
-            Console.WriteLine("Searching for " + TeamArray + "...");
-            object[,] TeamGetArray = SetUpExcel();
+            Console.WriteLine("Please Enter Team Name");
+            string userInput = Console.ReadLine();
+            Console.WriteLine("Search for " + userInput);
+            object[,] TeamArray = SetUpExcel();
             List<Season> TeamCollection = LoadCollection(TeamArray);
-            List<Season> nameCollection = TeamCollection.Where(s => s.TeamName == userInput).ToList();
-            return TeamCollection;
+            List<Season> TeamResultCollection = TeamCollection.Where(s => s.Team == userInput).ToList();
+            DisplayResults(TeamResultCollection);
         }
-
-       
 
         public static string ValidateInput()
         {
@@ -158,7 +145,7 @@ namespace NFL
                         selectedPosition.RushingYards);
                     printCount += 1;
                 }
-                Console.WriteLine("From "+skipCount+" to "+printCount);
+                Console.WriteLine("From " + skipCount + " to " + printCount);
                 Console.ReadKey();
                 skipCount += 25;
             } while (skipCount < displayCollection.Count);
@@ -280,7 +267,7 @@ namespace NFL
             {
                 parmArray[spreadsheetRow, (int)SpreadsheetColumn.collegeColumn] = "Unknown";
             }
-            if (String.Equals("0",(parmArray[spreadsheetRow, (int)SpreadsheetColumn.collegeColumn].ToString())))
+            if (String.Equals("0", (parmArray[spreadsheetRow, (int)SpreadsheetColumn.collegeColumn].ToString())))
             {
                 parmArray[spreadsheetRow, (int)SpreadsheetColumn.collegeColumn] = "Unknown";
             }
@@ -288,7 +275,7 @@ namespace NFL
             {
                 parmArray[spreadsheetRow, (int)SpreadsheetColumn.collegeColumn] = "Unknown";
             }
-            
+
             return parmArray;
         }
         public static Season AddSeason(int currentRow, object[,] ExcelArray)
