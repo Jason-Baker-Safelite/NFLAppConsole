@@ -124,6 +124,7 @@ namespace NFL
             List<Season> positionCollection = LoadCollection(positionArray).Where(s => s.Position == validInput).OrderBy(o => o.FullName).ThenBy(o => o.Year).ToList();
             return positionCollection;
         }
+
         public static void DisplayResults(List<Season> displayCollection)
         {
             int skipCount = 0;
@@ -181,6 +182,26 @@ namespace NFL
                                    orderby z.College
                                    select z.College
                                    ).Distinct().ToList();
+
+                int colCount = distCollege.Count;
+                int skipCount = 0;
+                int takeCount = 25;
+                int printCount = 0;
+                Console.WriteLine("Number of results " + colCount);
+
+                //do
+                //{
+                //    foreach (Season selectedPosition in distCollege.Skip<Season>(skipCount).Take<Season>(takeCount))
+                //    {
+                //        Console.WriteLine(distCollege.College);
+                //        printCount += 1;
+                //    }
+                //    Console.WriteLine("From " + skipCount + " to " + printCount);
+                //    Console.ReadKey();
+                //    skipCount += 25;
+                //} while (skipCount < colCount);
+
+
 
                 foreach (var College in distCollege)
                 {
