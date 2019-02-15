@@ -13,6 +13,10 @@ namespace NFL
         private static Excel.Application MyApp = null;
         private static Excel.Worksheet MySheet = null;
         private static Excel.Range MyRange = null;
+        private static object TeamArray;
+        private static readonly string menuSelection;
+        private static readonly object userInput;
+
         public enum SpreadsheetColumn
         {
             yearColumn = 1,
@@ -42,21 +46,22 @@ namespace NFL
             Console.WriteLine("3. Search by Position");
             Console.WriteLine("4. Search by Year");
             Console.WriteLine("5. Search by College");
-            string menuSelection = Console.ReadLine();
-            if (menuSelection == "1")
+            string userInput = Console.ReadLine();
+            if (userInput == "1")
             {
                 Console.WriteLine("You selected 1");
-                SearchByPlayer(menuSelection);
+                SearchByPlayer(userInput);
             }
-            else if (menuSelection == "2")
+            else if (userInput == "2")
             {
                 Console.WriteLine("You selected 2");
+                SearchByTeam(menuSelection);
             }
-            else if (menuSelection == "3")
+            else if (userInput == "3")
             {
                 Console.WriteLine("You selected 3");
                 Console.WriteLine("Please enter 2-character position: ");
-                string userInput = ValidateInput();
+                string userinput = ValidateInput();
                 List<Season> positionResultsCollection = SearchByPosition(userInput);
                 if (positionResultsCollection.Count == 0)
                 {
@@ -67,14 +72,14 @@ namespace NFL
                     DisplayResults(positionResultsCollection);
                 }
             }
-            else if (menuSelection == "4")
+            else if (userInput == "4")
             {
                 Console.WriteLine("You selected 4");
             }
-            else if (menuSelection == "5")
+            else if (userInput == "5")
             {
                 Console.WriteLine("You selected Search by College");
-                SearchByCollege(menuSelection);
+                SearchByCollege(userInput);
             }
             else
             {
@@ -82,6 +87,31 @@ namespace NFL
                 PrintMenu();
             }
         }
+        //Terrys Code
+        private static void SearchByTeam(string menuSelection)
+        //{
+        //        Console.WriteLine("I'm here now what");
+        //}
+        {
+                Console.WriteLine("Please Enter Team Name");
+                string userInput = Console.ReadLine();
+                Console.WriteLine("Search for " + userInput);
+                object[,] playerArray = SetUpExcel();
+                List<Season> TeamCollection = LoadCollection(TeamArray);
+                List<Season> nameCollection = TeamCollection.Where(s => s.FullName == userInput).ToList();
+        }
+
+                private static List<Season> LoadCollection(object TeamArray)
+        {
+            Console.WriteLine("Searching for " + TeamArray + "...");
+            object[,] TeamGetArray = SetUpExcel();
+            List<Season> TeamCollection = LoadCollection(TeamArray);
+            List<Season> nameCollection = TeamCollection.Where(s => s.TeamName == userInput).ToList();
+            return TeamCollection;
+        }
+
+       
+
         public static string ValidateInput()
         {
             bool validPositon = false;
