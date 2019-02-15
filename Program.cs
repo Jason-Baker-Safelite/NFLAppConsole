@@ -107,6 +107,7 @@ namespace NFL
             List<Season> positionCollection = LoadCollection(positionArray).Where(s => s.Position == validInput).OrderBy(o => o.FullName).ThenBy(o => o.Year).ToList();
             return positionCollection;
         }
+
         public static void DisplayResults(List<Season> displayCollection)
         {
             int skipCount = 0;
@@ -128,7 +129,7 @@ namespace NFL
                         selectedPosition.RushingYards);
                     printCount += 1;
                 }
-                Console.WriteLine("From "+skipCount+" to "+printCount);
+                Console.WriteLine("From " + skipCount + " to " + printCount);
                 Console.ReadKey();
                 skipCount += 25;
             } while (skipCount < displayCollection.Count);
@@ -164,6 +165,26 @@ namespace NFL
                                    orderby z.College
                                    select z.College
                                    ).Distinct().ToList();
+
+                int colCount = distCollege.Count;
+                int skipCount = 0;
+                int takeCount = 25;
+                int printCount = 0;
+                Console.WriteLine("Number of results " + colCount);
+
+                //do
+                //{
+                //    foreach (Season selectedPosition in distCollege.Skip<Season>(skipCount).Take<Season>(takeCount))
+                //    {
+                //        Console.WriteLine(distCollege.College);
+                //        printCount += 1;
+                //    }
+                //    Console.WriteLine("From " + skipCount + " to " + printCount);
+                //    Console.ReadKey();
+                //    skipCount += 25;
+                //} while (skipCount < colCount);
+
+
 
                 foreach (var College in distCollege)
                 {
@@ -250,7 +271,7 @@ namespace NFL
             {
                 parmArray[spreadsheetRow, (int)SpreadsheetColumn.collegeColumn] = "Unknown";
             }
-            if (String.Equals("0",(parmArray[spreadsheetRow, (int)SpreadsheetColumn.collegeColumn].ToString())))
+            if (String.Equals("0", (parmArray[spreadsheetRow, (int)SpreadsheetColumn.collegeColumn].ToString())))
             {
                 parmArray[spreadsheetRow, (int)SpreadsheetColumn.collegeColumn] = "Unknown";
             }
@@ -258,7 +279,7 @@ namespace NFL
             {
                 parmArray[spreadsheetRow, (int)SpreadsheetColumn.collegeColumn] = "Unknown";
             }
-            
+
             return parmArray;
         }
         public static Season AddSeason(int currentRow, object[,] ExcelArray)
