@@ -13,7 +13,11 @@ namespace NFL
         private static Excel.Application MyApp = null;
         private static Excel.Worksheet MySheet = null;
         private static Excel.Range MyRange = null;
-      
+        public enum FullNameBreakdown
+        {
+            firstNameIndex = 0,
+            lastNameIndex = 1
+        };
         public enum SpreadsheetColumn
         {
             yearColumn = 1,
@@ -58,11 +62,11 @@ namespace NFL
             {
                 Console.WriteLine("You selected 3");
                 Console.WriteLine("Please enter 2-character position: ");
-                string userinput = ValidateInput();
-                List<Season> positionResultsCollection = SearchByPosition(userInput);
+                string positionRequest = ValidatePositionInput();
+                List<Season> positionResultsCollection = SearchByPosition(positionRequest);
                 if (positionResultsCollection.Count == 0)
                 {
-                    Console.WriteLine("No entries found for position " + userInput);
+                    Console.WriteLine("No entries found for position " + positionRequest);
                 }
                 else
                 {
@@ -84,7 +88,7 @@ namespace NFL
                 PrintMenu();
             }
         }
-        //Terrys Code
+        //Terry's Code
         private static void SearchByTeam(string menuSelection)
         //{
         //        Console.WriteLine("I'm here now what");
@@ -98,8 +102,7 @@ namespace NFL
             List<Season> TeamResultCollection = TeamCollection.Where(s => s.Team == userInput).ToList();
             DisplayResults(TeamResultCollection);
         }
-
-        public static string ValidateInput()
+        public static string ValidatePositionInput()
         {
             bool validPositon = false;
             string userEntry = Console.ReadLine().ToUpper();
@@ -124,20 +127,19 @@ namespace NFL
             List<Season> positionCollection = LoadCollection(positionArray).Where(s => s.Position == validInput).OrderBy(o => o.FullName).ThenBy(o => o.Year).ToList();
             return positionCollection;
         }
-
         public static void DisplayResults(List<Season> displayCollection)
         {
             int skipCount = 0;
             int takeCount = 25;
             int printCount = 0;
             Console.WriteLine("Number of results " + displayCollection.Count);
-            Console.WriteLine("Position\t    Player Name\t\tTeam\tYear\tPassing Yds\tRushing Yds");
+            Console.WriteLine("Position\tPlayer Name\t\tTeam\tYear\tPassing Yds\tRushing Yds");
             do
             {
                 foreach (Season selectedPosition in displayCollection.Skip<Season>(skipCount).Take<Season>(takeCount))
                 {
 
-                    Console.WriteLine("{0,5}\t{1,25}\t{2,3}\t{3,4}\t{4,8:n0}\t{5,8:n0}",
+                    Console.WriteLine("{0,5}\t" + "   " + "{1,-25}\t{2,3}\t{3,4}\t{4,8:n0}\t{5," + "" + "8:n0}",
                         selectedPosition.Position,
                         selectedPosition.FullName,
                         selectedPosition.Team,
@@ -148,6 +150,7 @@ namespace NFL
                 }
                 Console.WriteLine("From " + skipCount + " to " + printCount);
                 Console.ReadKey();
+                Console.WriteLine("Position\tPlayer Name\t\tTeam\tYear\tPassing Yds\tRushing Yds");
                 skipCount += 25;
             } while (skipCount < displayCollection.Count);
             Console.WriteLine("Done with list");
@@ -201,8 +204,6 @@ namespace NFL
                 //    skipCount += 25;
                 //} while (skipCount < colCount);
 
-
-
                 foreach (var College in distCollege)
                 {
                     Console.WriteLine(College);
@@ -239,7 +240,7 @@ namespace NFL
             List<Season> spreadsheetCollection = new List<Season>();
             for (int currentRow = 2; currentRow <= ExcelArray.GetLength(0); currentRow++)
             {
-                object[,] correctedArray = Validate(currentRow, ExcelArray);
+                object[,] correctedArray = ValidateExcelData(currentRow, ExcelArray);
                 Season season = AddSeason(currentRow, correctedArray);
                 spreadsheetCollection.Add(season);
             }
@@ -258,7 +259,7 @@ namespace NFL
             object[,] objectArray = (object[,])MyRange.Value2;
             return objectArray;
         }
-        public static object[,] Validate(int spreadsheetRow, object[,] parmArray)
+        public static object[,] ValidateExcelData(int spreadsheetRow, object[,] parmArray)
         {
             if (double.IsNaN((double)parmArray[spreadsheetRow, (int)SpreadsheetColumn.yearColumn]))
             {
@@ -296,15 +297,15 @@ namespace NFL
             {
                 parmArray[spreadsheetRow, (int)SpreadsheetColumn.collegeColumn] = "Unknown";
             }
-
             return parmArray;
         }
         public static Season AddSeason(int currentRow, object[,] ExcelArray)
         {
+            string[] parseFullNameArray = ExcelArray[currentRow, (int)SpreadsheetColumn.playerColumn].ToString().Split(new char[] { ' ' });
             Season season = new Season()
             {
                 Year = Convert.ToDouble(ExcelArray[currentRow, (int)SpreadsheetColumn.yearColumn]),
-                FullName = ExcelArray[currentRow, (int)SpreadsheetColumn.playerColumn].ToString(),
+                FullName = parseFullNameArray[1] + ", " + parseFullNameArray[0],
                 Team = ExcelArray[currentRow, (int)SpreadsheetColumn.teamColumn].ToString(),
                 PassingYards = Convert.ToDouble(ExcelArray[currentRow, (int)SpreadsheetColumn.passingYardsColumn]),
                 RushingYards = Convert.ToDouble(ExcelArray[currentRow, (int)SpreadsheetColumn.rushingYardsColumn]),
