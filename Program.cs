@@ -129,10 +129,16 @@ namespace NFL
         }
         public static void DisplayResults(List<Season> displayCollection)
         {
+
             int skipCount = 0;
             int takeCount = 25;
             int printCount = 0;
-            Console.WriteLine("Number of results " + displayCollection.Count);
+            int pageCount = 1;
+            int totCount = displayCollection.Count;
+            int pageTot = (totCount + 24) / 25; // determine number of pages needed to display list
+            Console.WriteLine("Number of results " + totCount + " / page count " + pageTot);
+            Console.WriteLine(" ");
+
             Console.WriteLine("Position\tPlayer Name\t\tTeam\tYear\tPassing Yds\tRushing Yds");
             do
             {
