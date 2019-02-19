@@ -154,12 +154,38 @@ namespace NFL
                         selectedPosition.RushingYards);
                     printCount += 1;
                 }
-                Console.WriteLine("From " + skipCount + " to " + printCount);
-                Console.ReadKey();
+                pageCount = (skipCount / 25) + 1;
+                Console.WriteLine("Display Page " + pageCount + " 'N' Forward / 'P' Backward ' 'X' Exit or Specific Page");
+                string pageInput = Console.ReadLine().ToUpper();
+                if (pageInput == "N")
+                {
+                    skipCount += 25;
+                }
+                else if (pageInput == "P")
+                {
+                    skipCount -= 25;
+                    if (skipCount < 0)
+                    {
+                        skipCount = 0;
+                    }
+                    printCount -= 25;
+                }
+                else if (pageInput == "X")
+                {
+                    skipCount = totCount;
+                }
+                else if (pageInput != " ")
+                {
+                    int reqPage = int.Parse(pageInput);
+                    skipCount = (reqPage * 25) - 25;
+                }
                 Console.WriteLine("Position\tPlayer Name\t\tTeam\tYear\tPassing Yds\tRushing Yds");
-                skipCount += 25;
+                pageCount = (skipCount * 25) -1;
             } while (skipCount < displayCollection.Count);
             Console.WriteLine("Done with list");
+
+
+
         }
         public static void SearchByPlayer(string menuNumber)
         {
@@ -197,18 +223,6 @@ namespace NFL
                 int takeCount = 25;
                 int printCount = 0;
                 Console.WriteLine("Number of results " + colCount);
-
-                //do
-                //{
-                //    foreach (Season selectedPosition in distCollege.Skip<Season>(skipCount).Take<Season>(takeCount))
-                //    {
-                //        Console.WriteLine(distCollege.College);
-                //        printCount += 1;
-                //    }
-                //    Console.WriteLine("From " + skipCount + " to " + printCount);
-                //    Console.ReadKey();
-                //    skipCount += 25;
-                //} while (skipCount < colCount);
 
                 foreach (var College in distCollege)
                 {
