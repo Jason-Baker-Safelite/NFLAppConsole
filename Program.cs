@@ -132,7 +132,6 @@ namespace NFL
 
             int skipCount = 0;
             int takeCount = 25;
-            int printCount = 0;
             int pageCount = 1;
             int totCount = displayCollection.Count;
             int pageTot = (totCount + 24) / 25; // determine number of pages needed to display list
@@ -144,7 +143,6 @@ namespace NFL
             {
                 foreach (Season selectedPosition in displayCollection.Skip<Season>(skipCount).Take<Season>(takeCount))
                 {
-
                     Console.WriteLine("{0,5}\t" + "   " + "{1,-25}\t{2,3}\t{3,4}\t{4,8:n0}\t{5," + "" + "8:n0}",
                         selectedPosition.Position,
                         selectedPosition.FullName,
@@ -152,7 +150,58 @@ namespace NFL
                         selectedPosition.Year,
                         selectedPosition.PassingYards,
                         selectedPosition.RushingYards);
-                    printCount += 1;
+                }
+                pageCount = (skipCount / 25) + 1;
+                Console.WriteLine("Display Page " + pageCount + " 'N' Forward / 'P' Backward ' 'X' Exit or Specific Page");
+                string pageInput = Console.ReadLine().ToUpper();
+                if (pageInput == "N")
+                {
+                    skipCount += 25;
+                }
+                else if (pageInput == "P")
+                {
+                    skipCount -= 25;
+                    if (skipCount < 0)
+                    {
+                        skipCount = 0;
+                    }
+                }
+                else if (pageInput == "X")
+                {
+                    skipCount = totCount;
+                }
+                else if (pageInput != " ")
+                {
+                    int reqPage = int.Parse(pageInput);
+                    skipCount = (reqPage * 25) - 25;
+                }
+                Console.WriteLine("Position\tPlayer Name\t\tTeam\tYear\tPassing Yds\tRushing Yds");
+                pageCount = (skipCount * 25) -1;
+            } while (skipCount < displayCollection.Count);
+            Console.WriteLine("Done with list");
+
+
+
+        }
+        public static void DisplayList(List<Season> displayCollection)
+        {
+            int skipCount = 0;
+            int takeCount = 25;
+            int printCount = 0;
+            int pageCount = 1;
+            int totCount = displayCollection.Count;
+            int pageTot = (totCount + 24) / 25; // determine number of pages needed to display list
+            Console.WriteLine("Number of results " + totCount + " / page count " + pageTot);
+            Console.WriteLine(" ");
+
+            do
+            {
+                foreach (Season selectedPosition in displayCollection.Skip<Season>(skipCount).Take<Season>(takeCount))
+                {
+
+                    Console.WriteLine("{0,5}\t",
+                        selectedPosition.College,
+                        selectedPosition.FullName);
                 }
                 pageCount = (skipCount / 25) + 1;
                 Console.WriteLine("Display Page " + pageCount + " 'N' Forward / 'P' Backward ' 'X' Exit or Specific Page");
@@ -179,13 +228,9 @@ namespace NFL
                     int reqPage = int.Parse(pageInput);
                     skipCount = (reqPage * 25) - 25;
                 }
-                Console.WriteLine("Position\tPlayer Name\t\tTeam\tYear\tPassing Yds\tRushing Yds");
-                pageCount = (skipCount * 25) -1;
+                pageCount = (skipCount * 25) - 1;
             } while (skipCount < displayCollection.Count);
             Console.WriteLine("Done with list");
-
-
-
         }
         public static void SearchByPlayer(string menuNumber)
         {
@@ -219,9 +264,6 @@ namespace NFL
                                    ).Distinct().ToList();
 
                 int colCount = distCollege.Count;
-                int skipCount = 0;
-                int takeCount = 25;
-                int printCount = 0;
                 Console.WriteLine("Number of results " + colCount);
 
                 foreach (var College in distCollege)
@@ -255,6 +297,7 @@ namespace NFL
             }
             //Dennis college search - end
         }
+
         public static List<Season> LoadCollection(object[,] ExcelArray)
         {
             List<Season> spreadsheetCollection = new List<Season>();
