@@ -76,6 +76,7 @@ namespace NFL
             else if (userInput == "4")
             {
                 Console.WriteLine("You selected 4");
+                SearchByYear(userInput);
             }
             else if (userInput == "5")
             {
@@ -88,6 +89,19 @@ namespace NFL
                 PrintMenu();
             }
         }
+
+        private static void SearchByYear(string userInput)
+        {
+            Console.WriteLine("Please Enter Year");
+            string SelectYear = Console.ReadLine();
+            Console.WriteLine("Search for " + SelectYear);
+            object[,] YearArray = SetUpExcel();
+            List<Season> YearCollection = LoadCollection(YearArray);
+            List<Season> YearResultCollection = YearCollection.Where(s => s.Year.ToString() == SelectYear).ToList();
+            DisplayResults(YearResultCollection);
+            
+        }
+
         //Terry's Code
         private static void SearchByTeam(string menuSelection)
         //{
