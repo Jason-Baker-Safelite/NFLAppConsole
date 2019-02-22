@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using Excel = Microsoft.Office.Interop.Excel;
+
 
 namespace NFL
 {
@@ -274,9 +276,12 @@ namespace NFL
 
                 var distCollege = (from z in playerCollection
                                    orderby z.College
-                                   select z.College
+                                   select z.College.ToUpper()
                                    ).Distinct().ToList();
+                //List<string> regList = new List<string>();
+                //regList=Search(distCollege.AsEnumerable<string>(),"%r%");
                 DisplayStringList(distCollege);
+                
             }
             else
             {
@@ -394,5 +399,20 @@ namespace NFL
             MyApp.Quit();
             Marshal.ReleaseComObject(MyApp);
         }
+        public static IEnumerable<string> Search(IEnumerable<string> data, string q)
+        {
+            string regexSearch = q
+                .Replace("*", ".+")
+                .Replace("%", ".+")
+                .Replace("#", "\\d")
+                .Replace("@", "[a-zA-Z]")
+                .Replace("?", "\\w");
+
+            Regex regex = new Regex(regexSearch);
+
+            return data
+                .Where(s => regex.IsMatch(s));
+        }
     }
+
 }
