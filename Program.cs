@@ -107,9 +107,6 @@ namespace NFL
 
         //Terry's Code
         private static void SearchByTeam(string menuSelection)
-        //{
-        //        Console.WriteLine("I'm here now what");
-        //}
         {
             Console.WriteLine("Please Enter Team Name");
             string userInput = Console.ReadLine();
@@ -288,6 +285,7 @@ namespace NFL
                     Console.WriteLine("Searching for results for selected entry " +selectedString);
                 }
             } while (skipCount < 2);
+           // return displayCollection;
         }
 
         public static void SearchByPlayer(string menuNumber)
@@ -312,43 +310,55 @@ namespace NFL
             }
             if (input == "?")
             {
-                Console.WriteLine("Searching for colleges...");
-
-                object[,] playerArray = SetUpExcel();
-                List<Season> playerCollection = LoadCollection(playerArray);
-
-                var distCollege = (from z in playerCollection
-                                   orderby z.College
-                                   select z.College.ToUpper()
-                                   ).Distinct().ToList();
+                CollegeList();
                 //List<string> regList = new List<string>();
                 //regList=Search(distCollege.AsEnumerable<string>(),"%r%");
-                DisplayStringList(distCollege);
+                //                Console.WriteLine("next " + selectedString);
             }
             else
             {
-                Console.WriteLine("Searching for players from " + input);
-
-                object[,] playerArray = SetUpExcel();
-                List<Season> playerCollection = LoadCollection(playerArray);
-                List<Season> nameCollection = playerCollection.Where(s => s.College == input).ToList();
-
-                var distPlayer = (from z in nameCollection
-                                  orderby z.FullName
-                                  select new Season
-                                  {
-                                      Year = z.Year,
-                                      FullName = z.FullName,
-                                      Team = z.Team,
-                                      PassingYards = z.PassingYards,
-                                      RushingYards = z.RushingYards,
-                                      College = z.College,
-                                      Position = z.Position
-                                  }
-                                   ).Distinct().ToList();
-                DisplayResults(distPlayer);
+                ColPlayerList(input);
             }
             //Dennis college search - end
+        }
+
+        private static void ColPlayerList(string input)
+        {
+            Console.WriteLine("Searching for players from " + input);
+
+            object[,] playerArray = SetUpExcel();
+            List<Season> playerCollection = LoadCollection(playerArray);
+            List<Season> nameCollection = playerCollection.Where(s => s.College == input).ToList();
+
+            var distPlayer = (from z in nameCollection
+                              orderby z.FullName
+                              select new Season
+                              {
+                                  Year = z.Year,
+                                  FullName = z.FullName,
+                                  Team = z.Team,
+                                  PassingYards = z.PassingYards,
+                                  RushingYards = z.RushingYards,
+                                  College = z.College,
+                                  Position = z.Position
+                              }
+                               ).Distinct().ToList();
+            DisplayResults(distPlayer);
+        }
+
+        private static void CollegeList()
+        {
+            Console.WriteLine("Searching for colleges...");
+
+            object[,] playerArray = SetUpExcel();
+            List<Season> playerCollection = LoadCollection(playerArray);
+
+            var distCollege = (from z in playerCollection
+                               orderby z.College
+                               select z.College.ToUpper()
+                               ).Distinct().ToList();
+            // ?? How to pass "distCollege" and get selection returned
+            DisplayStringList(distCollege);
         }
 
         public static List<Season> LoadCollection(object[,] ExcelArray)
