@@ -38,7 +38,7 @@ namespace NFL
             //ProcessSpreadsheet(SetUpExcel());
             //string endTime = DateTime.Now.ToString();
             //Console.WriteLine("End time: {0}", endTime);
-           
+
             Console.ReadKey();
             Cleanup();
         }
@@ -102,7 +102,7 @@ namespace NFL
             List<Season> YearCollection = LoadCollection(YearArray);
             List<Season> YearResultCollection = YearCollection.Where(s => s.Year.ToString() == SelectYear).ToList();
             DisplayResults(YearResultCollection);
-            
+
         }
 
         //Terry's Code
@@ -152,7 +152,7 @@ namespace NFL
             int takeCount = pageSize;
             int pageCount = 1;
             int totCount = displayCollection.Count;
-            int pageTot = (totCount + (pageSize -1)) / pageSize; // determine number of pages needed to display list
+            int pageTot = (totCount + (pageSize - 1)) / pageSize; // determine number of pages needed to display list
             Console.WriteLine("Number of results " + totCount + " / page count " + pageTot);
             Console.WriteLine(" ");
 
@@ -193,9 +193,21 @@ namespace NFL
                 else if (pageInput != " ")
                 {
                     int reqPage = int.Parse(pageInput);
-                    skipCount = (reqPage * pageSize) - pageSize;
+                    if (reqPage > pageTot)
+                    {
+                        Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                        Console.WriteLine("Entered page greater than number of pages in list");
+                        Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                    }
+                    else if (reqPage == 0)
+                    {
+                        Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                        Console.WriteLine("Entered page must be greater than zero");
+                        Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                    }
+                    else
+                        skipCount = (reqPage * pageSize) - pageSize;
                 }
-//                Console.WriteLine("Position\tPlayer Name\t\tTeam\tYear\tPassing Yds\tRushing Yds");
                 pageCount = (skipCount * pageSize) - 1;
             } while (skipCount < displayCollection.Count);
             Console.WriteLine("Done with list");
@@ -208,7 +220,7 @@ namespace NFL
             int printCount = 0;
             int pageCount = 1;
             int totCount = displayCollection.Count;
-            int pageTot = (totCount + (pageSize-1)) / pageSize; // determine number of pages needed to display list
+            int pageTot = (totCount + (pageSize - 1)) / pageSize; // determine number of pages needed to display list
             Console.WriteLine("Number of results " + totCount + " / page count " + pageTot);
             Console.WriteLine(" ");
 
@@ -245,13 +257,39 @@ namespace NFL
                 else if (pageInput != " ")
                 {
                     int reqPage = int.Parse(pageInput);
-                    skipCount = (reqPage * pageSize) - pageSize;
+                    if (reqPage > pageTot)
+                    {
+                        Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                        Console.WriteLine("Entered page greater than number of pages in list");
+                        Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                    }
+                    else if (reqPage == 0)
+                    {
+                        Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                        Console.WriteLine("Entered page must be greater than zero");
+                        Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                    }
+                    else
+                        skipCount = (reqPage * pageSize) - pageSize;
                 }
                 pageCount = (skipCount * pageSize) - 1;
                 printCount = skipCount + 1;
             } while (skipCount < displayCollection.Count);
-            Console.WriteLine("Done with list");
+//            Console.WriteLine("Done with list");
+            Console.WriteLine("Done with list - Enter number of desired entry");
+            string SelInput = Console.ReadLine();
+            int reqSel = int.Parse(SelInput);
+            skipCount = reqSel - 1;
+            takeCount = 1;
+            do
+            {
+                foreach (string selectedString in displayCollection.Skip<string>(skipCount).Take<string>(takeCount))
+                {
+                    Console.WriteLine("Searching for results for selected entry " +selectedString);
+                }
+            } while (skipCount < 2);
         }
+
         public static void SearchByPlayer(string menuNumber)
         {
             Console.WriteLine("Please Enter Player Name");
@@ -286,11 +324,10 @@ namespace NFL
                 //List<string> regList = new List<string>();
                 //regList=Search(distCollege.AsEnumerable<string>(),"%r%");
                 DisplayStringList(distCollege);
-                
             }
             else
             {
-                Console.WriteLine("Searching for players from "+input);
+                Console.WriteLine("Searching for players from " + input);
 
                 object[,] playerArray = SetUpExcel();
                 List<Season> playerCollection = LoadCollection(playerArray);
