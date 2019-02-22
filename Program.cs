@@ -38,6 +38,7 @@ namespace NFL
             //ProcessSpreadsheet(SetUpExcel());
             //string endTime = DateTime.Now.ToString();
             //Console.WriteLine("End time: {0}", endTime);
+           
             Console.ReadKey();
             Cleanup();
         }
@@ -147,10 +148,11 @@ namespace NFL
         {
 
             int skipCount = 0;
-            int takeCount = 25;
+            int pageSize = 25;
+            int takeCount = pageSize;
             int pageCount = 1;
             int totCount = displayCollection.Count;
-            int pageTot = (totCount + 24) / 25; // determine number of pages needed to display list
+            int pageTot = (totCount + (pageSize -1)) / pageSize; // determine number of pages needed to display list
             Console.WriteLine("Number of results " + totCount + " / page count " + pageTot);
             Console.WriteLine(" ");
 
@@ -167,20 +169,22 @@ namespace NFL
                         selectedPosition.PassingYards,
                         selectedPosition.RushingYards);
                 }
-                pageCount = (skipCount / 25) + 1;
-                Console.WriteLine("Display Page " + pageCount + " of " + pageTot + " 'N' Forward / 'P' Backward ' 'X' Exit or Specific Page");
+                pageCount = (skipCount / pageSize) + 1;
+                Console.WriteLine("Display Page " + pageCount + " of " + pageTot + " 'F' Forward / 'B' Backward ' 'X' Exit or Specific Page");
                 string pageInput = Console.ReadLine().ToUpper();
-                if (pageInput == "N")
+                if (pageInput == "F")
                 {
-                    skipCount += 25;
+                    skipCount += pageSize;
+                    Console.WriteLine("Position\tPlayer Name\t\tTeam\tYear\tPassing Yds\tRushing Yds");
                 }
-                else if (pageInput == "P")
+                else if (pageInput == "B")
                 {
-                    skipCount -= 25;
+                    skipCount -= pageSize;
                     if (skipCount < 0)
                     {
                         skipCount = 0;
                     }
+                    Console.WriteLine("Position\tPlayer Name\t\tTeam\tYear\tPassing Yds\tRushing Yds");
                 }
                 else if (pageInput == "X")
                 {
@@ -189,21 +193,22 @@ namespace NFL
                 else if (pageInput != " ")
                 {
                     int reqPage = int.Parse(pageInput);
-                    skipCount = (reqPage * 25) - 25;
+                    skipCount = (reqPage * pageSize) - pageSize;
                 }
-                Console.WriteLine("Position\tPlayer Name\t\tTeam\tYear\tPassing Yds\tRushing Yds");
-                pageCount = (skipCount * 25) - 1;
+//                Console.WriteLine("Position\tPlayer Name\t\tTeam\tYear\tPassing Yds\tRushing Yds");
+                pageCount = (skipCount * pageSize) - 1;
             } while (skipCount < displayCollection.Count);
             Console.WriteLine("Done with list");
         }
         public static void DisplayStringList(List<string> displayCollection)
         {
             int skipCount = 0;
-            int takeCount = 25;
+            int pageSize = 25;
+            int takeCount = pageSize;
             int printCount = 0;
             int pageCount = 1;
             int totCount = displayCollection.Count;
-            int pageTot = (totCount + 24) / 25; // determine number of pages needed to display list
+            int pageTot = (totCount + (pageSize-1)) / pageSize; // determine number of pages needed to display list
             Console.WriteLine("Number of results " + totCount + " / page count " + pageTot);
             Console.WriteLine(" ");
 
@@ -218,16 +223,16 @@ namespace NFL
                     Console.WriteLine(printCount + ". " + selectedString);
                     printCount += 1;
                 }
-                pageCount = (skipCount / 25) + 1;
-                Console.WriteLine("Display Page " + pageCount + " of " + pageTot + " 'N' Forward / 'P' Backward ' 'X' Exit or Specific Page");
+                pageCount = (skipCount / pageSize) + 1;
+                Console.WriteLine("Display Page " + pageCount + " of " + pageTot + " 'F' Forward / 'B' Backward ' 'X' Exit or Specific Page");
                 string pageInput = Console.ReadLine().ToUpper();
-                if (pageInput == "N")
+                if (pageInput == "F")
                 {
-                    skipCount += 25;
+                    skipCount += pageSize;
                 }
-                else if (pageInput == "P")
+                else if (pageInput == "B")
                 {
-                    skipCount -= 25;
+                    skipCount -= pageSize;
                     if (skipCount < 0)
                     {
                         skipCount = 0;
@@ -240,9 +245,9 @@ namespace NFL
                 else if (pageInput != " ")
                 {
                     int reqPage = int.Parse(pageInput);
-                    skipCount = (reqPage * 25) - 25;
+                    skipCount = (reqPage * pageSize) - pageSize;
                 }
-                pageCount = (skipCount * 25) - 1;
+                pageCount = (skipCount * pageSize) - 1;
                 printCount = skipCount + 1;
             } while (skipCount < displayCollection.Count);
             Console.WriteLine("Done with list");
@@ -285,7 +290,7 @@ namespace NFL
             }
             else
             {
-                Console.WriteLine("Searching for players...");
+                Console.WriteLine("Searching for players from "+input);
 
                 object[,] playerArray = SetUpExcel();
                 List<Season> playerCollection = LoadCollection(playerArray);
