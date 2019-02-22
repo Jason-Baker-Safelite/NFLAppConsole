@@ -160,6 +160,7 @@ namespace NFL
             object[,] playerArray = SetUpExcel();
             List<Season> playerCollection = LoadCollection(playerArray);
             List<Season> nameCollection = playerCollection.Where(s => s.FullName == userInput).ToList();
+            DisplayResults(nameCollection);
         }
         //Dennis college search - start
         public static void SearchByCollege(string menuNumber)
