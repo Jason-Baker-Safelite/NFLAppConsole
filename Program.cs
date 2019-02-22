@@ -176,59 +176,57 @@ namespace NFL
                     skipCount = (reqPage * 25) - 25;
                 }
                 Console.WriteLine("Position\tPlayer Name\t\tTeam\tYear\tPassing Yds\tRushing Yds");
-                pageCount = (skipCount * 25) -1;
+                pageCount = (skipCount * 25) - 1;
             } while (skipCount < displayCollection.Count);
             Console.WriteLine("Done with list");
         }
-        //public static void DisplayList(List<Season> displayCollection)
-        //{
-        //    int skipCount = 0;
-        //    int takeCount = 25;
-        //    int printCount = 0;
-        //    int pageCount = 1;
-        //    int totCount = displayCollection.Count;
-        //    int pageTot = (totCount + 24) / 25; // determine number of pages needed to display list
-        //    Console.WriteLine("Number of results " + totCount + " / page count " + pageTot);
-        //    Console.WriteLine(" ");
+        public static void DisplayList(List<string> displayCollection)
+        {
+            int skipCount = 0;
+            int takeCount = 25;
+            int printCount = 0;
+            int pageCount = 1;
+            int totCount = displayCollection.Count;
+            int pageTot = (totCount + 24) / 25; // determine number of pages needed to display list
+            Console.WriteLine("Number of results " + totCount + " / page count " + pageTot);
+            Console.WriteLine(" ");
 
-        //    do
-        //    {
-        //        foreach (Season selectedPosition in displayCollection.Skip<Season>(skipCount).Take<Season>(takeCount))
-        //        {
+            do
+            {
+                foreach (string selectedPosition in displayCollection.Skip<string>(skipCount).Take<string>(takeCount))
+                {
 
-        //            Console.WriteLine("{0,5}\t",
-        //                selectedPosition.College,
-        //                selectedPosition.FullName);
-        //        }
-        //        pageCount = (skipCount / 25) + 1;
-        //        Console.WriteLine("Display Page " + pageCount + " 'N' Forward / 'P' Backward ' 'X' Exit or Specific Page");
-        //        string pageInput = Console.ReadLine().ToUpper();
-        //        if (pageInput == "N")
-        //        {
-        //            skipCount += 25;
-        //        }
-        //        else if (pageInput == "P")
-        //        {
-        //            skipCount -= 25;
-        //            if (skipCount < 0)
-        //            {
-        //                skipCount = 0;
-        //            }
-        //            printCount -= 25;
-        //        }
-        //        else if (pageInput == "X")
-        //        {
-        //            skipCount = totCount;
-        //        }
-        //        else if (pageInput != " ")
-        //        {
-        //            int reqPage = int.Parse(pageInput);
-        //            skipCount = (reqPage * 25) - 25;
-        //        }
-        //        pageCount = (skipCount * 25) - 1;
-        //    } while (skipCount < displayCollection.Count);
-        //    Console.WriteLine("Done with list");
-        //}
+                    Console.WriteLine(selectedPosition);
+                }
+                pageCount = (skipCount / 25) + 1;
+                Console.WriteLine("Display Page " + pageCount + " 'N' Forward / 'P' Backward ' 'X' Exit or Specific Page");
+                string pageInput = Console.ReadLine().ToUpper();
+                if (pageInput == "N")
+                {
+                    skipCount += 25;
+                }
+                else if (pageInput == "P")
+                {
+                    skipCount -= 25;
+                    if (skipCount < 0)
+                    {
+                        skipCount = 0;
+                    }
+                    printCount -= 25;
+                }
+                else if (pageInput == "X")
+                {
+                    skipCount = totCount;
+                }
+                else if (pageInput != " ")
+                {
+                    int reqPage = int.Parse(pageInput);
+                    skipCount = (reqPage * 25) - 25;
+                }
+                pageCount = (skipCount * 25) - 1;
+            } while (skipCount < displayCollection.Count);
+            Console.WriteLine("Done with list");
+        }
         public static void SearchByPlayer(string menuNumber)
         {
             Console.WriteLine("Please Enter Player Name");
@@ -259,15 +257,7 @@ namespace NFL
                                    orderby z.College
                                    select z.College
                                    ).Distinct().ToList();
-
-                int colCount = distCollege.Count;
-                Console.WriteLine("Number of results " + colCount);
-
-                foreach (var College in distCollege)
-                {
-                    Console.WriteLine(College);
-                }
-                Console.WriteLine("College List complete");
+                DisplayList(distCollege);
             }
             else
             {
