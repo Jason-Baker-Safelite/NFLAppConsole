@@ -152,7 +152,7 @@ namespace NFL
                         selectedPosition.RushingYards);
                 }
                 pageCount = (skipCount / 25) + 1;
-                Console.WriteLine("Display Page " + pageCount + " 'N' Forward / 'P' Backward ' 'X' Exit or Specific Page");
+                Console.WriteLine("Display Page " + pageCount + " of " + pageTot + " 'N' Forward / 'P' Backward ' 'X' Exit or Specific Page");
                 string pageInput = Console.ReadLine().ToUpper();
                 if (pageInput == "N")
                 {
@@ -180,7 +180,7 @@ namespace NFL
             } while (skipCount < displayCollection.Count);
             Console.WriteLine("Done with list");
         }
-        public static void DisplayList(List<string> displayCollection)
+        public static void DisplayStringList(List<string> displayCollection)
         {
             int skipCount = 0;
             int takeCount = 25;
@@ -193,13 +193,17 @@ namespace NFL
 
             do
             {
-                foreach (string selectedPosition in displayCollection.Skip<string>(skipCount).Take<string>(takeCount))
+                foreach (string selectedString in displayCollection.Skip<string>(skipCount).Take<string>(takeCount))
                 {
-
-                    Console.WriteLine(selectedPosition);
+                    if (printCount == 0)
+                    {
+                        printCount = 1;
+                    };
+                    Console.WriteLine(printCount + ". " + selectedString);
+                    printCount += 1;
                 }
                 pageCount = (skipCount / 25) + 1;
-                Console.WriteLine("Display Page " + pageCount + " 'N' Forward / 'P' Backward ' 'X' Exit or Specific Page");
+                Console.WriteLine("Display Page " + pageCount + " of " + pageTot + " 'N' Forward / 'P' Backward ' 'X' Exit or Specific Page");
                 string pageInput = Console.ReadLine().ToUpper();
                 if (pageInput == "N")
                 {
@@ -212,7 +216,6 @@ namespace NFL
                     {
                         skipCount = 0;
                     }
-                    printCount -= 25;
                 }
                 else if (pageInput == "X")
                 {
@@ -224,6 +227,7 @@ namespace NFL
                     skipCount = (reqPage * 25) - 25;
                 }
                 pageCount = (skipCount * 25) - 1;
+                printCount = skipCount + 1;
             } while (skipCount < displayCollection.Count);
             Console.WriteLine("Done with list");
         }
@@ -257,7 +261,7 @@ namespace NFL
                                    orderby z.College
                                    select z.College
                                    ).Distinct().ToList();
-                DisplayList(distCollege);
+                DisplayStringList(distCollege);
             }
             else
             {
