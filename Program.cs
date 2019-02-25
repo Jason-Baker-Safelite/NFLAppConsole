@@ -185,14 +185,14 @@ namespace NFL
                         selectedPosition.RushingYards,
                         selectedPosition.College);
                 }
-                pageCount = PageControlResults(ref skipCount, pageSize, totCount, pageTot);
+                pageCount = PageControl(ref skipCount, pageSize, totCount, pageTot, "Y");
             } while (skipCount < displayCollection.Count);
             Console.WriteLine("Done with list");
         }
         //************************************************************************
-        // Player results paging logic
+        // Paging logic
         //************************************************************************
-        private static int PageControlResults(ref int skipCount, int pageSize, int totCount, int pageTot)
+        private static int PageControl(ref int skipCount, int pageSize, int totCount, int pageTot, string headerList)
         {
             int pageCount = (skipCount / pageSize) + 1;
             Console.WriteLine("Display Page " + pageCount + " of " + pageTot + " 'F' Forward / 'B' Backward ' 'X' Exit or Specific Page");
@@ -200,7 +200,10 @@ namespace NFL
             if (pageInput == "F")
             {
                 skipCount += pageSize;
-                Console.WriteLine("Position\tPlayer Name\t\tTeam\tYear\tPassing Yds\tRushing Yds");
+                if (headerList == "Y")
+                {
+                    Console.WriteLine("Position\tPlayer Name\t\tTeam\tYear\tPassing Yds\tRushing Yds");
+                }
             }
             else if (pageInput == "B")
             {
@@ -209,7 +212,10 @@ namespace NFL
                 {
                     skipCount = 0;
                 }
-                Console.WriteLine("Position\tPlayer Name\t\tTeam\tYear\tPassing Yds\tRushing Yds");
+                if (headerList == "Y")
+                {
+                    Console.WriteLine("Position\tPlayer Name\t\tTeam\tYear\tPassing Yds\tRushing Yds");
+                }
             }
             else if (pageInput == "X")
             {
@@ -262,7 +268,7 @@ namespace NFL
                     Console.WriteLine(printCount + ". " + selectedString);
                     printCount += 1;
                 }
-                skipCount = PageControlList(skipCount, pageSize, out printCount, out pageCount, totCount, pageTot);
+                pageCount = PageControl(ref skipCount, pageSize, totCount, pageTot, "N");
             } while (skipCount < displayCollection.Count);
 //            Console.WriteLine("Done with list");
             Console.WriteLine("Done with list - Enter number of desired entry");
@@ -282,52 +288,6 @@ namespace NFL
             {
                 ColPlayerList(listSelection);
             }
-        }
-        //************************************************************************
-        // List results paging logic
-        //************************************************************************
-        private static int PageControlList(int skipCount, int pageSize, out int printCount, out int pageCount, int totCount, int pageTot)
-        {
-            pageCount = (skipCount / pageSize) + 1;
-            Console.WriteLine("Display Page " + pageCount + " of " + pageTot + " 'F' Forward / 'B' Backward ' 'X' Exit or Specific Page");
-            string pageInput = Console.ReadLine().ToUpper();
-            if (pageInput == "F")
-            {
-                skipCount += pageSize;
-            }
-            else if (pageInput == "B")
-            {
-                skipCount -= pageSize;
-                if (skipCount < 0)
-                {
-                    skipCount = 0;
-                }
-            }
-            else if (pageInput == "X")
-            {
-                skipCount = totCount;
-            }
-            else if (pageInput != " ")
-            {
-                int reqPage = int.Parse(pageInput);
-                if (reqPage > pageTot)
-                {
-                    Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                    Console.WriteLine("Entered page greater than number of pages in list");
-                    Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                }
-                else if (reqPage == 0)
-                {
-                    Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                    Console.WriteLine("Entered page must be greater than zero");
-                    Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                }
-                else
-                    skipCount = (reqPage * pageSize) - pageSize;
-            }
-            pageCount = (skipCount * pageSize) - 1;
-            printCount = skipCount + 1;
-            return skipCount;
         }
         //************************************************************************
         // Seach by Player processing - Liping
