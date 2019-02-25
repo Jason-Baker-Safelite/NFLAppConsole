@@ -102,7 +102,7 @@ namespace NFL
             }
         }
         //************************************************************************
-        // Seach by year processing
+        // Seach by year processing - Randy
         //************************************************************************
         private static void SearchByYear(string userInput)
         {
@@ -115,7 +115,7 @@ namespace NFL
             DisplayResults(YearResultCollection);
         }
         //************************************************************************
-        // Seach by team processing
+        // Seach by team processing - Terry
         //************************************************************************
         private static void SearchByTeam(string menuSelection)
         {
@@ -128,7 +128,7 @@ namespace NFL
             DisplayResults(TeamResultCollection);
         }
         //************************************************************************
-        // Validate Position 
+        // Validate Position
         //************************************************************************
         public static string ValidatePositionInput()
         {
@@ -149,7 +149,7 @@ namespace NFL
             return userEntry;
         }
         //************************************************************************
-        // Seach by position processing
+        // Seach by position processing -Jason
         //************************************************************************
         public static List<Season> SearchByPosition(string validInput)
         {
@@ -330,7 +330,7 @@ namespace NFL
             return skipCount;
         }
         //************************************************************************
-        // Seach by Player processing
+        // Seach by Player processing - Liping
         //************************************************************************
         public static void SearchByPlayer(string menuNumber)
         {
@@ -343,7 +343,7 @@ namespace NFL
             DisplayResults(nameCollection);
         }
         //************************************************************************
-        // Seach by College processing
+        // Seach by College processing - Dennis
         //************************************************************************
         public static void SearchByCollege(string menuNumber)
         {
@@ -375,7 +375,7 @@ namespace NFL
             List<Season> nameCollection = playerCollection.Where(s => s.College == input).ToList();
 
             var distPlayer = (from z in nameCollection
-                              orderby z.FullName
+                              orderby z.FullName, z.Year, z.Team
                               select new Season
                               {
                                   Year = z.Year,
