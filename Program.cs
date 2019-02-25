@@ -119,13 +119,22 @@ namespace NFL
         //************************************************************************
         private static void SearchByTeam(string menuSelection)
         {
-            Console.WriteLine("Please Enter Team Name");
-            string userInput = Console.ReadLine();
-            Console.WriteLine("Search for " + userInput);
-            object[,] TeamArray = SetUpExcel();
-            List<Season> TeamCollection = LoadCollection(TeamArray);
-            List<Season> TeamResultCollection = TeamCollection.Where(s => s.Team == userInput).ToList();
-            DisplayResults(TeamResultCollection);
+
+            Console.WriteLine("Please Enter Team Name or '?' to list teams");
+            string input = Console.ReadLine();
+            while (String.IsNullOrEmpty(input))
+            {
+                Console.WriteLine("Please enter selection for teams");
+                input = Console.ReadLine();
+            }
+            if (input == "?")
+            {
+                TeamList();
+            }
+            else
+            {
+                SelTeamList(input);
+            }
         }
         //************************************************************************
         // Validate Position
@@ -259,12 +268,17 @@ namespace NFL
             Console.WriteLine(" ");
             do
             {
+                if (pageCount == 1)
+                {
+                    printCount = 1;
+                }
+                else
+                {
+                    printCount = skipCount + 1;
+                };
+
                 foreach (string selectedString in displayCollection.Skip<string>(skipCount).Take<string>(takeCount))
                 {
-                    if (printCount == 0)
-                    {
-                        printCount = 1;
-                    };
                     Console.WriteLine(printCount + ". " + selectedString);
                     printCount += 1;
                 }
@@ -288,19 +302,35 @@ namespace NFL
             {
                 ColPlayerList(listSelection);
             }
+            else if (displayType == "Player")
+            {
+                SelPlayerList(listSelection);
+            }
+            else if (displayType == "Team")
+            {
+                SelTeamList(listSelection);
+            }
         }
         //************************************************************************
         // Seach by Player processing - Liping
         //************************************************************************
         public static void SearchByPlayer(string menuNumber)
         {
-            Console.WriteLine("Please Enter Player Name");
-            string userInput = Console.ReadLine();
-            Console.WriteLine("Search for " + userInput);
-            object[,] playerArray = SetUpExcel();
-            List<Season> playerCollection = LoadCollection(playerArray);
-            List<Season> nameCollection = playerCollection.Where(s => s.FullName == userInput).ToList();
-            DisplayResults(nameCollection);
+            Console.WriteLine("Please Enter Player Name or '?' to list all players");
+            string input = Console.ReadLine();
+            while (String.IsNullOrEmpty(input))
+            {
+                Console.WriteLine("Please enter selection for player");
+                input = Console.ReadLine();
+            }
+            if (input == "?")
+            {
+                PlayerList();
+            }
+            else
+            {
+                SelPlayerList(input);
+            }
         }
         //************************************************************************
         // Seach by College processing - Dennis
@@ -350,6 +380,57 @@ namespace NFL
             DisplayResults(distPlayer);
         }
         //************************************************************************
+        // Create team player results
+        //************************************************************************
+        private static void SelTeamList(string input)
+        {
+            Console.WriteLine("Searching for players from " + input);
+
+            object[,] playerArray = SetUpExcel();
+            List<Season> playerCollection = LoadCollection(playerArray);
+            List<Season> nameCollection = playerCollection.Where(s => s.Team == input).ToList();
+
+            var distPlayer = (from z in nameCollection
+                              orderby z.FullName, z.Year, z.Team
+                              select new Season
+                              {
+                                  Year = z.Year,
+                                  FullName = z.FullName,
+                                  Team = z.Team,
+                                  PassingYards = z.PassingYards,
+                                  RushingYards = z.RushingYards,
+                                  College = z.College,
+                                  Position = z.Position
+                              }
+                               ).Distinct().ToList();
+            DisplayResults(distPlayer);
+        }
+        //************************************************************************
+        // Create select player results
+        //************************************************************************
+        private static void SelPlayerList(string input)
+        {
+            Console.WriteLine("Searching for players from " + input);
+            object[,] playerArray = SetUpExcel();
+            List<Season> playerCollection = LoadCollection(playerArray);
+            List<Season> nameCollection = playerCollection.Where(s => s.FullName == input).ToList();
+
+            var distPlayer = (from z in nameCollection
+                              orderby z.FullName, z.Year, z.Team
+                              select new Season
+                              {
+                                  Year = z.Year,
+                                  FullName = z.FullName,
+                                  Team = z.Team,
+                                  PassingYards = z.PassingYards,
+                                  RushingYards = z.RushingYards,
+                                  College = z.College,
+                                  Position = z.Position
+                              }
+                               ).Distinct().ToList();
+            DisplayResults(distPlayer);
+        }
+        //************************************************************************
         // Create college list results
         //************************************************************************
         private static void CollegeList()
@@ -365,6 +446,40 @@ namespace NFL
                                ).Distinct().ToList();
             string myList = "College";
             DisplayStringList(distCollege, myList);
+        }
+        //************************************************************************
+        // Create team list results
+        //************************************************************************
+        private static void TeamList()
+        {
+            Console.WriteLine("Searching for teams...");
+
+            object[,] playerArray = SetUpExcel();
+            List<Season> playerCollection = LoadCollection(playerArray);
+
+            var distTeam = (from z in playerCollection
+                               orderby z.Team
+                               select z.Team
+                               ).Distinct().ToList();
+            string myList = "Team";
+            DisplayStringList(distTeam, myList);
+        }
+        //************************************************************************
+        // Create player list results
+        //************************************************************************
+        private static void PlayerList()
+        {
+            Console.WriteLine("Searching for players...");
+
+            object[,] playerArray = SetUpExcel();
+            List<Season> playerCollection = LoadCollection(playerArray);
+
+            var distPlayer = (from z in playerCollection
+                               orderby z.FullName
+                               select z.FullName
+                               ).Distinct().ToList();
+            string myList = "Player";
+            DisplayStringList(distPlayer, myList);
         }
         //************************************************************************
         // Create Load collection from spreadsheet
