@@ -305,11 +305,11 @@ namespace NFL
             else if (displayType == "Player")
             {
                 SelPlayerList(listSelection);
-            }
+             }
             else if (displayType == "Team")
             {
                 SelTeamList(listSelection);
-            }
+             }
         }
         //************************************************************************
         // Seach by Player processing - Liping
@@ -439,6 +439,7 @@ namespace NFL
 
             object[,] playerArray = SetUpExcel();
             List<Season> playerCollection = LoadCollection(playerArray);
+            Cleanup();
 
             var distCollege = (from z in playerCollection
                                orderby z.College
@@ -456,6 +457,7 @@ namespace NFL
 
             object[,] playerArray = SetUpExcel();
             List<Season> playerCollection = LoadCollection(playerArray);
+            Cleanup();
 
             var distTeam = (from z in playerCollection
                                orderby z.Team
@@ -473,6 +475,7 @@ namespace NFL
 
             object[,] playerArray = SetUpExcel();
             List<Season> playerCollection = LoadCollection(playerArray);
+            Cleanup();
 
             var distPlayer = (from z in playerCollection
                                orderby z.FullName
