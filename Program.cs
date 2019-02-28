@@ -129,11 +129,11 @@ namespace NFL
             }
             if (input == "?")
             {
-                TeamList();
+                AllTeamList();
             }
             else
             {
-                SelTeamList(input);
+                SelTeamPlayerList(input);
             }
         }
         //************************************************************************
@@ -232,6 +232,9 @@ namespace NFL
             }
             else if (pageInput != " ")
             {
+                // ???????????????????????????????????????????
+                // ??? add logic to check for non-valid chars
+                // ???????????????????????????????????????????
                 int reqPage = int.Parse(pageInput);
                 if (reqPage > pageTot)
                 {
@@ -254,7 +257,7 @@ namespace NFL
         //************************************************************************
         // Seach list results
         //************************************************************************
-        public static void DisplayStringList(List<string> displayCollection, string displayType)
+        public static void DisplayStringList(List<string> displayCollection)
         {
             int skipCount = 0;
             int pageSize = 25;
@@ -262,7 +265,6 @@ namespace NFL
             int printCount = 0;
             int pageCount = 1;
             int totCount = displayCollection.Count;
-            string listSelection = " ";
             int pageTot = (totCount + (pageSize - 1)) / pageSize; // determine number of pages needed to display list
             Console.WriteLine("Number of results " + totCount + " / page count " + pageTot);
             Console.WriteLine(" ");
@@ -284,32 +286,7 @@ namespace NFL
                 }
                 pageCount = PageControl(ref skipCount, pageSize, totCount, pageTot, "N");
             } while (skipCount < displayCollection.Count);
-//            Console.WriteLine("Done with list");
-            Console.WriteLine("Done with list - Enter number of desired entry");
-            string SelInput = Console.ReadLine();
-            int reqSel = int.Parse(SelInput);
-            skipCount = reqSel - 1;
-            takeCount = 1;
-            do
-            {
-                foreach (string selectedString in displayCollection.Skip<string>(skipCount).Take<string>(takeCount))
-                {
-                    Console.WriteLine("Searching for results for selected entry " +selectedString);
-                    listSelection = selectedString;
-                }
-            } while (skipCount < 2);
-            if (displayType == "College")
-            {
-                ColPlayerList(listSelection);
-            }
-            else if (displayType == "Player")
-            {
-                SelPlayerList(listSelection);
-             }
-            else if (displayType == "Team")
-            {
-                SelTeamList(listSelection);
-             }
+            Console.WriteLine("Done with list");
         }
         //************************************************************************
         // Seach by Player processing - Liping
@@ -325,11 +302,11 @@ namespace NFL
             }
             if (input == "?")
             {
-                PlayerList();
+                AllPlayerList();
             }
             else
             {
-                SelPlayerList(input);
+                SelPlayerPlayerList(input);
             }
         }
         //************************************************************************
@@ -346,17 +323,17 @@ namespace NFL
             }
             if (input == "?")
             {
-                CollegeList();
+                AllCollegeList();
             }
             else
             {
-                ColPlayerList(input);
+                SelCollegePlayerList(input);
             }
         }
         //************************************************************************
         // Create college player results
         //************************************************************************
-        private static void ColPlayerList(string input)
+        private static void SelCollegePlayerList(string input)
         {
             Console.WriteLine("Searching for players from " + input);
 
@@ -382,7 +359,7 @@ namespace NFL
         //************************************************************************
         // Create team player results
         //************************************************************************
-        private static void SelTeamList(string input)
+        private static void SelTeamPlayerList(string input)
         {
             Console.WriteLine("Searching for players from " + input);
 
@@ -408,7 +385,7 @@ namespace NFL
         //************************************************************************
         // Create select player results
         //************************************************************************
-        private static void SelPlayerList(string input)
+        private static void SelPlayerPlayerList(string input)
         {
             Console.WriteLine("Searching for players from " + input);
             object[,] playerArray = SetUpExcel();
@@ -431,9 +408,32 @@ namespace NFL
             DisplayResults(distPlayer);
         }
         //************************************************************************
+        // Find selected entry from numbered list
+        //************************************************************************
+        private static string FindSelectedEntry(List<string> distList)
+        {
+            Console.WriteLine("Done with list - Enter number of desired entry");
+            string SelInput = Console.ReadLine();
+            int reqSel = int.Parse(SelInput);
+
+            int skipCount = reqSel - 1;
+            int takeCount = 1;
+            string listSelection = " ";
+            do
+            {
+                foreach (string selectedString in distList.Skip<string>(skipCount).Take<string>(takeCount))
+                {
+                    Console.WriteLine("Searching for results for selected entry " + selectedString);
+                    listSelection = selectedString;
+                }
+            } while (skipCount < 2);
+            return listSelection;
+        }
+
+        //************************************************************************
         // Create college list results
         //************************************************************************
-        private static void CollegeList()
+        private static void AllCollegeList()
         {
             Console.WriteLine("Searching for colleges...");
 
@@ -445,13 +445,17 @@ namespace NFL
                                orderby z.College
                                select z.College
                                ).Distinct().ToList();
-            string myList = "College";
-            DisplayStringList(distCollege, myList);
+
+            DisplayStringList(distCollege);
+            string listSelection = FindSelectedEntry(distCollege);
+            SelCollegePlayerList(listSelection);
         }
+
+
         //************************************************************************
         // Create team list results
         //************************************************************************
-        private static void TeamList()
+        private static void AllTeamList()
         {
             Console.WriteLine("Searching for teams...");
 
@@ -463,13 +467,15 @@ namespace NFL
                                orderby z.Team
                                select z.Team
                                ).Distinct().ToList();
-            string myList = "Team";
-            DisplayStringList(distTeam, myList);
+
+            DisplayStringList(distTeam);
+            string listSelection = FindSelectedEntry(distTeam);
+            SelTeamPlayerList(listSelection);
         }
         //************************************************************************
         // Create player list results
         //************************************************************************
-        private static void PlayerList()
+        private static void AllPlayerList()
         {
             Console.WriteLine("Searching for players...");
 
@@ -481,8 +487,9 @@ namespace NFL
                                orderby z.FullName
                                select z.FullName
                                ).Distinct().ToList();
-            string myList = "Player";
-            DisplayStringList(distPlayer, myList);
+            DisplayStringList(distPlayer);
+            string listSelection = FindSelectedEntry(distPlayer);
+            SelPlayerPlayerList(listSelection);
         }
         //************************************************************************
         // Create Load collection from spreadsheet
