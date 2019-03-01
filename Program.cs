@@ -42,7 +42,7 @@ namespace NFL
         //************************************************************************
         public static void Main(string[] args)
         {
-            NFLAppConsole.NFLSearch NflSearch = new NFLAppConsole.NFLSearch();
+           // NFLAppConsole.NFLSearch NflSearch = new NFLAppConsole.NFLSearch();
 
 
             Cleanup();
