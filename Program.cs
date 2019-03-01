@@ -42,6 +42,7 @@ namespace NFL
         //************************************************************************
         public static void Main(string[] args)
         {
+            Cleanup();
             PrintMenu();
             //string startTime = DateTime.Now.ToString();
             //Console.WriteLine("Start time: {0}", startTime);
@@ -50,7 +51,6 @@ namespace NFL
             //Console.WriteLine("End time: {0}", endTime);
 
             Console.ReadKey();
-            Cleanup();
         }
 
         //************************************************************************
@@ -384,9 +384,6 @@ namespace NFL
         //************************************************************************
         private static void Cleanup()
         {
-            string XLS_PATH = ConfigurationManager.AppSettings.Get("ExcelPath");
-            MyBook = MyApp.Workbooks.Open(XLS_PATH);
-
             GC.Collect();
             GC.WaitForPendingFinalizers();
             Marshal.ReleaseComObject(MyRange);
