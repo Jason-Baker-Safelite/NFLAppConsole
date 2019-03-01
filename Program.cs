@@ -42,11 +42,18 @@ namespace NFL
         //************************************************************************
         public static void Main(string[] args)
         {
+            NFLAppConsole.NFLSearch NflSearch = new NFLAppConsole.NFLSearch();
+
+
             Cleanup();
-            PrintMenu();
+            bool Mainloop = true;
+            do
+            {
+                Mainloop = PrintMenu(Mainloop);
+            } while (Mainloop == true);
+
             //string startTime = DateTime.Now.ToString();
             //Console.WriteLine("Start time: {0}", startTime);
-            //ProcessSpreadsheet(SetUpExcel());
             //string endTime = DateTime.Now.ToString();
             //Console.WriteLine("End time: {0}", endTime);
 
@@ -56,7 +63,7 @@ namespace NFL
         //************************************************************************
         // Selection menu
         //************************************************************************
-        public static void PrintMenu()
+        public static bool PrintMenu(bool Printloop)
         {
             Console.WriteLine("Select Menu Item");
             Console.WriteLine("1. Search by Player");
@@ -64,6 +71,8 @@ namespace NFL
             Console.WriteLine("3. Search by Position");
             Console.WriteLine("4. Search by Year");
             Console.WriteLine("5. Search by College");
+            Console.WriteLine("6. Exit");
+
             string userInput = Console.ReadLine();
             if (userInput == "1")
             {
@@ -100,11 +109,17 @@ namespace NFL
                 Console.WriteLine("You selected Search by College");
                 SearchByCollege(userInput);
             }
+            else if (userInput == "6")
+            {
+                Console.WriteLine("Goodbye");
+                Printloop = false;
+             }
             else
             {
                 Console.WriteLine("Invalid Menu Selection");
-                PrintMenu();
+//                PrintMenu();
             }
+            return Printloop;
         }
 
         //************************************************************************
@@ -191,8 +206,7 @@ namespace NFL
 
             //object[,] playerArray = SetUpExcel();
             List<Season> playerCollection = LoadCollection(ExcelArray);
-            Cleanup();
-
+ 
             var distTeam = (from z in playerCollection
                             orderby z.Team
                             select z.Team
@@ -236,7 +250,6 @@ namespace NFL
 
             //object[,] playerArray = SetUpExcel();
             List<Season> playerCollection = LoadCollection(ExcelArray);
-            Cleanup();
 
             var distPlayer = (from z in playerCollection
                               orderby z.FullName
@@ -307,7 +320,6 @@ namespace NFL
 
             //object[,] playerArray = SetUpExcel();
             List<Season> playerCollection = LoadCollection(ExcelArray);
-            //Cleanup();
 
             var distCollege = (from z in playerCollection
                                orderby z.College
@@ -634,7 +646,7 @@ namespace NFL
             Season season = new Season()
             {
                 Year = Convert.ToDouble(ExcelArray[currentRow, (int)SpreadsheetColumn.yearColumn]),
-                FullName = parseFullNameArray[1] + ", " + parseFullNameArray[0],
+                FullName = parseFullNameArray[(int)FullNameBreakdown.lastNameIndex] + ", " + parseFullNameArray[(int)FullNameBreakdown.firstNameIndex],
                 Team = ExcelArray[currentRow, (int)SpreadsheetColumn.teamColumn].ToString(),
                 PassingYards = Convert.ToDouble(ExcelArray[currentRow, (int)SpreadsheetColumn.passingYardsColumn]),
                 RushingYards = Convert.ToDouble(ExcelArray[currentRow, (int)SpreadsheetColumn.rushingYardsColumn]),
