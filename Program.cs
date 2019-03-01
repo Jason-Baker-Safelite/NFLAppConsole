@@ -44,27 +44,42 @@ namespace NFL
         {
 
             //CODE OF ENCAPSULATING INTO CLASS
-            NFLAppConsole.NFLSearch NflSearch = new NFLAppConsole.NFLSearch();
-            NflSearch.LoadUp();
-            NflSearch.Cleanup();
-            NflSearch.PrintConsoleMenu(true);
+            //NFLAppConsole.NFLSearch NflSearch = new NFLAppConsole.NFLSearch();
+            //NflSearch.LoadUp();
+            //NflSearch.Cleanup();
+            //NflSearch.PrintConsoleMenu(true);
+            //END CODE OF ENCAPSULATING INTO CLASS
+
+            //CODE TO TEST OUT WILDCARD SEARCH
+            //List<string> teamList = new List<string>();
+            //teamList.Add("CIN");
+            //teamList.Add("PAT");
+            //teamList.Add("CINCY");
+            //teamList.Add("DEN");
+            //teamList.Add("SDC");
+            //teamList.Add("MIA");
+            //teamList.Add("OFF");
+            //teamList.Add("BOB");
+            //teamList.Add("CIP");
+            //IEnumerable<string> searched = Search(teamList, "CI*");
+            //List<string> results = searched.ToList();
+            //END CODE TEST WILDCARD
 
 
-            //UNCOMMENT THIS FOR REGULAR RUNS
-            //Cleanup();
-            //bool Mainloop = true;
-            //do
-            //{
-            //    Mainloop = PrintMenu(Mainloop);
+            Cleanup();
+            bool Mainloop = true;
+            do
+            {
+                Mainloop = PrintMenu(Mainloop);
 
-            //} while (Mainloop == true);
+            } while (Mainloop == true);
 
-            ////string startTime = DateTime.Now.ToString();
-            ////Console.WriteLine("Start time: {0}", startTime);
-            ////string endTime = DateTime.Now.ToString();
-            ////Console.WriteLine("End time: {0}", endTime);
+            //string startTime = DateTime.Now.ToString();
+            //Console.WriteLine("Start time: {0}", startTime);
+            //string endTime = DateTime.Now.ToString();
+            //Console.WriteLine("End time: {0}", endTime);
 
-            //Console.ReadKey();
+            Console.ReadKey();
         }
 
         //************************************************************************
