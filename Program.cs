@@ -42,22 +42,29 @@ namespace NFL
         //************************************************************************
         public static void Main(string[] args)
         {
-           // NFLAppConsole.NFLSearch NflSearch = new NFLAppConsole.NFLSearch();
+
+            //CODE OF ENCAPSULATING INTO CLASS
+            NFLAppConsole.NFLSearch NflSearch = new NFLAppConsole.NFLSearch();
+            NflSearch.LoadUp();
+            NflSearch.Cleanup();
+            NflSearch.PrintConsoleMenu(true);
 
 
-            Cleanup();
-            bool Mainloop = true;
-            do
-            {
-                Mainloop = PrintMenu(Mainloop);
-            } while (Mainloop == true);
+            //UNCOMMENT THIS FOR REGULAR RUNS
+            //Cleanup();
+            //bool Mainloop = true;
+            //do
+            //{
+            //    Mainloop = PrintMenu(Mainloop);
 
-            //string startTime = DateTime.Now.ToString();
-            //Console.WriteLine("Start time: {0}", startTime);
-            //string endTime = DateTime.Now.ToString();
-            //Console.WriteLine("End time: {0}", endTime);
+            //} while (Mainloop == true);
 
-            Console.ReadKey();
+            ////string startTime = DateTime.Now.ToString();
+            ////Console.WriteLine("Start time: {0}", startTime);
+            ////string endTime = DateTime.Now.ToString();
+            ////Console.WriteLine("End time: {0}", endTime);
+
+            //Console.ReadKey();
         }
 
         //************************************************************************
