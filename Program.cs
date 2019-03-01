@@ -15,6 +15,8 @@ namespace NFL
         private static Excel.Application MyApp = null;
         private static Excel.Worksheet MySheet = null;
         private static Excel.Range MyRange = null;
+        private static object[,] ExcelArray = SetUpExcel();
+
         public enum FullNameBreakdown
         {
             firstNameIndex = 0,
@@ -113,8 +115,8 @@ namespace NFL
             Console.WriteLine("Please Enter Year");
             string SelectYear = Console.ReadLine();
             Console.WriteLine("Search for " + SelectYear);
-            object[,] YearArray = SetUpExcel();
-            List<Season> YearCollection = LoadCollection(YearArray);
+            //object[,] YearArray = SetUpExcel();
+            List<Season> YearCollection = LoadCollection(ExcelArray);
             List<Season> YearResultCollection = YearCollection.Where(s => s.Year.ToString() == SelectYear).ToList();
             DisplayResults(YearResultCollection);
         }
@@ -125,8 +127,8 @@ namespace NFL
         public static List<Season> SearchByPosition(string validInput)
         {
             Console.WriteLine("Searching for " + validInput + "...");
-            object[,] positionArray = SetUpExcel();
-            List<Season> positionCollection = LoadCollection(positionArray).Where(s => s.Position == validInput).OrderBy(o => o.FullName).ThenBy(o => o.Year).ToList();
+            //object[,] positionArray = SetUpExcel();
+            List<Season> positionCollection = LoadCollection(ExcelArray).Where(s => s.Position == validInput).OrderBy(o => o.FullName).ThenBy(o => o.Year).ToList();
             return positionCollection;
         }
 
@@ -160,8 +162,8 @@ namespace NFL
         {
             Console.WriteLine("Searching for players from " + input);
 
-            object[,] playerArray = SetUpExcel();
-            List<Season> playerCollection = LoadCollection(playerArray);
+            //object[,] playerArray = SetUpExcel();
+            List<Season> playerCollection = LoadCollection(ExcelArray);
             List<Season> nameCollection = playerCollection.Where(s => s.Team == input).ToList();
 
             var distPlayer = (from z in nameCollection
@@ -187,8 +189,8 @@ namespace NFL
         {
             Console.WriteLine("Searching for teams...");
 
-            object[,] playerArray = SetUpExcel();
-            List<Season> playerCollection = LoadCollection(playerArray);
+            //object[,] playerArray = SetUpExcel();
+            List<Season> playerCollection = LoadCollection(ExcelArray);
             Cleanup();
 
             var distTeam = (from z in playerCollection
@@ -232,8 +234,8 @@ namespace NFL
         {
             Console.WriteLine("Searching for players...");
 
-            object[,] playerArray = SetUpExcel();
-            List<Season> playerCollection = LoadCollection(playerArray);
+            //object[,] playerArray = SetUpExcel();
+            List<Season> playerCollection = LoadCollection(ExcelArray);
             Cleanup();
 
             var distPlayer = (from z in playerCollection
@@ -254,8 +256,8 @@ namespace NFL
         private static void SelPlayerPlayerList(string input)
         {
             Console.WriteLine("Searching for players from " + input);
-            object[,] playerArray = SetUpExcel();
-            List<Season> playerCollection = LoadCollection(playerArray);
+            //object[,] playerArray = SetUpExcel();
+            List<Season> playerCollection = LoadCollection(ExcelArray);
             List<Season> nameCollection = playerCollection.Where(s => s.FullName == input).ToList();
 
             var distPlayer = (from z in nameCollection
@@ -303,9 +305,9 @@ namespace NFL
         {
             Console.WriteLine("Searching for colleges...");
 
-            object[,] playerArray = SetUpExcel();
-            List<Season> playerCollection = LoadCollection(playerArray);
-            Cleanup();
+            //object[,] playerArray = SetUpExcel();
+            List<Season> playerCollection = LoadCollection(ExcelArray);
+            //Cleanup();
 
             var distCollege = (from z in playerCollection
                                orderby z.College
@@ -325,8 +327,8 @@ namespace NFL
         {
             Console.WriteLine("Searching for players from " + input);
 
-            object[,] playerArray = SetUpExcel();
-            List<Season> playerCollection = LoadCollection(playerArray);
+            //object[,] playerArray = SetUpExcel();
+            List<Season> playerCollection = LoadCollection(ExcelArray);
             List<Season> nameCollection = playerCollection.Where(s => s.College == input).ToList();
 
             var distPlayer = (from z in nameCollection
@@ -375,6 +377,24 @@ namespace NFL
             MyRange = MySheet.UsedRange;
             object[,] objectArray = (object[,])MyRange.Value2;
             return objectArray;
+        }
+
+        //************************************************************************
+        // Close EXCEL
+        //************************************************************************
+        private static void Cleanup()
+        {
+            string XLS_PATH = ConfigurationManager.AppSettings.Get("ExcelPath");
+            MyBook = MyApp.Workbooks.Open(XLS_PATH);
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            Marshal.ReleaseComObject(MyRange);
+            Marshal.ReleaseComObject(MySheet);
+            MyBook.Close();
+            Marshal.ReleaseComObject(MyBook);
+            MyApp.Quit();
+            Marshal.ReleaseComObject(MyApp);
         }
 
         //************************************************************************
@@ -626,22 +646,7 @@ namespace NFL
             };
             return season;
         }
-
-        //************************************************************************
-        // Close EXCEL
-        //************************************************************************
-        private static void Cleanup()
-        {
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-            Marshal.ReleaseComObject(MyRange);
-            Marshal.ReleaseComObject(MySheet);
-            MyBook.Close();
-            Marshal.ReleaseComObject(MyBook);
-            MyApp.Quit();
-            Marshal.ReleaseComObject(MyApp);
-        }
-
+        
         //************************************************************************
         // Validate Position
         //************************************************************************
