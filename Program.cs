@@ -61,7 +61,7 @@ namespace NFL
             //teamList.Add("OFF");
             //teamList.Add("BOB");
             //teamList.Add("CIP");
-            //IEnumerable<string> searched = Search(teamList, "CI*");
+            //IEnumerable<string> searched = Search(teamList, "*N?");
             //List<string> results = searched.ToList();
             //END CODE TEST WILDCARD
 
@@ -467,7 +467,7 @@ namespace NFL
         {
             int pageCount = (skipCount / pageSize) + 1;
             Console.WriteLine("Display Page " + pageCount + " of " + pageTot + " 'F' Forward / 'B' Backward ' 'X' Exit or Specific Page");
-            string pageInput = Console.ReadLine().ToUpper();
+            string pageInput = Console.ReadLine().ToUpper().Trim();
 
             if (pageInput == "F")
             {
@@ -493,7 +493,7 @@ namespace NFL
             {
                 skipCount = totCount;
             }
-            else if (pageInput.All(char.IsDigit))
+            else if (!String.IsNullOrEmpty(pageInput) && pageInput.All(char.IsDigit))
             {
                 // ???????????????????????????????????????????
                 // ??? add logic to check for non-valid chars
@@ -513,6 +513,12 @@ namespace NFL
                 }
                 else
                     skipCount = (reqPage * pageSize) - pageSize;
+            }
+            else
+            {
+                Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                Console.WriteLine("Entered invalid page request");
+                Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             }
             pageCount = (skipCount * pageSize) - 1;
             return pageCount;
@@ -706,7 +712,7 @@ namespace NFL
         public static IEnumerable<string> Search(IEnumerable<string> data, string q)
         {
             string regexSearch = q
-                .Replace("*", ".+")
+                .Replace("*", ".+")      // match that character one or more times
                 .Replace("%", ".+")
                 .Replace("#", "\\d")
                 .Replace("@", "[a-zA-Z]")
