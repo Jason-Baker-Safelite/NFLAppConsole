@@ -50,22 +50,6 @@ namespace NFL
             //NflSearch.PrintConsoleMenu(true);
             //END CODE OF ENCAPSULATING INTO CLASS
 
-            //CODE TO TEST OUT WILDCARD SEARCH
-            //List<string> teamList = new List<string>();
-            //teamList.Add("CIN");
-            //teamList.Add("PAT");
-            //teamList.Add("CINCY");
-            //teamList.Add("DEN");
-            //teamList.Add("SDC");
-            //teamList.Add("MIA");
-            //teamList.Add("OFF");
-            //teamList.Add("BOB");
-            //teamList.Add("CIP");
-            //List<string> searched = Search(teamList, "*N?").ToList();
-            //List<string> results = searched.ToList();
-            //END CODE TEST WILDCARD
-
-
             Cleanup();
             bool Mainloop = true;
             do
@@ -249,9 +233,9 @@ namespace NFL
                 Console.WriteLine("Please enter selection for player");
                 input = Console.ReadLine();
             }
-            if (input == "?")
+            if (input == "?" || input.Contains("*"))
             {
-                AllPlayerList();
+                AllPlayerList(input);
             }
             else
             {
@@ -261,7 +245,7 @@ namespace NFL
         //************************************************************************
         // Create collection of unique players 
         //************************************************************************
-        private static void AllPlayerList()
+        private static void AllPlayerList(string SelPlayerType)
         {
             Console.WriteLine("Searching for players...");
 
@@ -271,6 +255,12 @@ namespace NFL
                               orderby z.FullName
                               select z.FullName
                                ).Distinct().ToList();
+
+            if (SelPlayerType.Contains("*"))
+            {
+                distPlayer = Search(distPlayer, SelPlayerType).ToList();
+            }
+
             DisplayStringList(distPlayer);
 
             int EntryMax = distPlayer.Count;
