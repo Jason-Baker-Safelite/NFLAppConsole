@@ -61,7 +61,7 @@ namespace NFL
             //teamList.Add("OFF");
             //teamList.Add("BOB");
             //teamList.Add("CIP");
-            //IEnumerable<string> searched = Search(teamList, "*N?");
+            //List<string> searched = Search(teamList, "*N?").ToList();
             //List<string> results = searched.ToList();
             //END CODE TEST WILDCARD
 
@@ -135,11 +135,11 @@ namespace NFL
             {
                 Console.WriteLine("Goodbye");
                 Printloop = false;
-             }
+            }
             else
             {
                 Console.WriteLine("Invalid Menu Selection");
-//                PrintMenu();
+                //                PrintMenu();
             }
             return Printloop;
         }
@@ -152,7 +152,6 @@ namespace NFL
             Console.WriteLine("Please Enter Year");
             string SelectYear = Console.ReadLine();
             Console.WriteLine("Search for " + SelectYear);
-            //object[,] YearArray = SetUpExcel();
             List<Season> YearCollection = LoadCollection(ExcelArray);
             List<Season> YearResultCollection = YearCollection.Where(s => s.Year.ToString() == SelectYear).ToList();
             DisplayResults(YearResultCollection);
@@ -164,7 +163,6 @@ namespace NFL
         public static List<Season> SearchByPosition(string validInput)
         {
             Console.WriteLine("Searching for " + validInput + "...");
-            //object[,] positionArray = SetUpExcel();
             List<Season> positionCollection = LoadCollection(ExcelArray).Where(s => s.Position == validInput).OrderBy(o => o.FullName).ThenBy(o => o.Year).ToList();
             return positionCollection;
         }
@@ -174,7 +172,6 @@ namespace NFL
         //************************************************************************
         private static void SearchByTeam(string menuSelection)
         {
-
             Console.WriteLine("Please Enter Team Name or '?' to list teams");
             string input = Console.ReadLine();
             while (String.IsNullOrEmpty(input))
@@ -199,7 +196,6 @@ namespace NFL
         {
             Console.WriteLine("Searching for players from " + input);
 
-            //object[,] playerArray = SetUpExcel();
             List<Season> playerCollection = LoadCollection(ExcelArray);
             List<Season> nameCollection = playerCollection.Where(s => s.Team == input).ToList();
 
@@ -226,9 +222,8 @@ namespace NFL
         {
             Console.WriteLine("Searching for teams...");
 
-            //object[,] playerArray = SetUpExcel();
             List<Season> playerCollection = LoadCollection(ExcelArray);
- 
+
             var distTeam = (from z in playerCollection
                             orderby z.Team
                             select z.Team
@@ -270,7 +265,6 @@ namespace NFL
         {
             Console.WriteLine("Searching for players...");
 
-            //object[,] playerArray = SetUpExcel();
             List<Season> playerCollection = LoadCollection(ExcelArray);
 
             var distPlayer = (from z in playerCollection
@@ -291,7 +285,6 @@ namespace NFL
         private static void SelPlayerPlayerList(string input)
         {
             Console.WriteLine("Searching for players from " + input);
-            //object[,] playerArray = SetUpExcel();
             List<Season> playerCollection = LoadCollection(ExcelArray);
             List<Season> nameCollection = playerCollection.Where(s => s.FullName == input).ToList();
 
@@ -316,17 +309,18 @@ namespace NFL
         //************************************************************************
         public static void SearchByCollege(string menuNumber)
         {
-            Console.WriteLine("Please Enter College Name or '?' to list colleges");
+            Console.WriteLine("Please Enter College Name, partial name* for wildcard, or '?' for all colleges");
             string input = Console.ReadLine();
             while (String.IsNullOrEmpty(input))
             {
                 Console.WriteLine("Please enter selection for colleges");
                 input = Console.ReadLine();
             }
-            if (input == "?")
+            if (input == "?" || input.Contains("*"))
             {
-                AllCollegeList();
+                AllCollegeList(input);
             }
+
             else
             {
                 SelCollegePlayerList(input);
@@ -336,17 +330,21 @@ namespace NFL
         //************************************************************************
         // Create collection of unique colleges
         //************************************************************************
-        private static void AllCollegeList()
+        private static void AllCollegeList(string SelType)
         {
             Console.WriteLine("Searching for colleges...");
 
-            //object[,] playerArray = SetUpExcel();
             List<Season> playerCollection = LoadCollection(ExcelArray);
 
             var distCollege = (from z in playerCollection
                                orderby z.College
                                select z.College
                                ).Distinct().ToList();
+
+            if (SelType.Contains("*"))
+            {
+                distCollege = Search(distCollege, SelType).ToList();
+            }
 
             DisplayStringList(distCollege);
             int EntryMax = distCollege.Count;
@@ -361,7 +359,6 @@ namespace NFL
         {
             Console.WriteLine("Searching for players from " + input);
 
-            //object[,] playerArray = SetUpExcel();
             List<Season> playerCollection = LoadCollection(ExcelArray);
             List<Season> nameCollection = playerCollection.Where(s => s.College == input).ToList();
 
@@ -562,7 +559,7 @@ namespace NFL
         //************************************************************************
         // Find selected entry from numbered list
         //************************************************************************
-        private static string FindSelectedEntry(List<string> distList,int EntryMax)
+        private static string FindSelectedEntry(List<string> distList, int EntryMax)
         {
             Console.WriteLine("Enter number of desired entry");
             string SelInput = Console.ReadLine();
@@ -588,24 +585,6 @@ namespace NFL
                 }
 
             } while (goodSel == false);
-
-            //while (String.IsNullOrEmpty(SelInput))
-            //{
-            //    Console.WriteLine("Please enter number of desired entry");
-            //    SelInput = Console.ReadLine();
-            //}
-            //reqSel = int.Parse(SelInput);
-
-            //if (SelInput == "0")
-            //{
-            //    Console.WriteLine("Entry must be greater than zero");
-            //    SelInput = Console.ReadLine();
-            //}
-            //else if (reqSel > EntryMax)
-            //{
-            //    Console.WriteLine("Entry cannot be greater than "+EntryMax);
-            //    SelInput = Console.ReadLine();
-            //}
 
             int skipCount = reqSel - 1;
             int takeCount = 1;
@@ -683,7 +662,7 @@ namespace NFL
             };
             return season;
         }
-        
+
         //************************************************************************
         // Validate Position
         //************************************************************************
