@@ -578,6 +578,7 @@ namespace NFL
 
             int skipCount = reqSel - 1;
             int takeCount = 1;
+            int resultCount = 0;
             string listSelection = " ";
             do
             {
@@ -585,8 +586,9 @@ namespace NFL
                 {
                     Console.WriteLine("Searching for results for selected entry " + selectedString);
                     listSelection = selectedString;
+                    resultCount += 1;
                 }
-            } while (skipCount < 1);
+            } while (resultCount ==1);
             return listSelection;
         }
 
