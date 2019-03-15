@@ -163,9 +163,9 @@ namespace NFL
                 Console.WriteLine("Please enter selection for teams");
                 input = Console.ReadLine();
             }
-            if (input == "?")
+            if (input == "?" || input.Contains("*"))
             {
-                AllTeamList();
+                AllTeamList(input);
             }
             else
             {
@@ -202,7 +202,7 @@ namespace NFL
         //************************************************************************
         // Create collection of unique teams
         //************************************************************************
-        private static void AllTeamList()
+        private static void AllTeamList(string SelType)
         {
             Console.WriteLine("Searching for teams...");
 
@@ -213,12 +213,22 @@ namespace NFL
                             select z.Team
                                ).Distinct().ToList();
 
+            if (SelType.Contains("*"))
+            {
+                distTeam = Search(distTeam, SelType).ToList();
+            }
+
             DisplayStringList(distTeam);
 
             int EntryMax = distTeam.Count;
             string listSelection = FindSelectedEntry(distTeam, EntryMax);
 
             SelTeamPlayerList(listSelection);
+
+
+
+
+
         }
 
         //************************************************************************
@@ -245,7 +255,7 @@ namespace NFL
         //************************************************************************
         // Create collection of unique players 
         //************************************************************************
-        private static void AllPlayerList(string SelPlayerType)
+        private static void AllPlayerList(string SelType)
         {
             Console.WriteLine("Searching for players...");
 
@@ -256,9 +266,9 @@ namespace NFL
                               select z.FullName
                                ).Distinct().ToList();
 
-            if (SelPlayerType.Contains("*"))
+            if (SelType.Contains("*"))
             {
-                distPlayer = Search(distPlayer, SelPlayerType).ToList();
+                distPlayer = Search(distPlayer, SelType).ToList();
             }
 
             DisplayStringList(distPlayer);
