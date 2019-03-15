@@ -565,6 +565,7 @@ namespace NFL
             string SelInput = Console.ReadLine();
             int reqSel = 0;
             bool goodSel = false;
+            string listSelection = " ";
 
             do
             {
@@ -586,20 +587,10 @@ namespace NFL
 
             } while (goodSel == false);
 
-            int skipCount = reqSel - 1;
-            int takeCount = 1;
-            int resultCount = 0;
-            string listSelection = " ";
-            do
-            {
-                foreach (string selectedString in distList.Skip<string>(skipCount).Take<string>(takeCount))
-                {
-                    Console.WriteLine("Searching for results for selected entry " + selectedString);
-                    listSelection = selectedString;
-                    resultCount += 1;
-                }
-            } while (resultCount ==1);
-            return listSelection;
+            // subtract 1 from the selection value - list starts with zero
+            reqSel--;
+            listSelection = distList[reqSel];
+            return listSelection;  // This is the entry to use for the player list routines
         }
 
         //************************************************************************
